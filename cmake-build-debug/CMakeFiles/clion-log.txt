@@ -1,1 +1,0 @@
-CMakeLists.txt not found in /home/josev/CLionProjects/immersive-checkers Select CMakeLists.txt
