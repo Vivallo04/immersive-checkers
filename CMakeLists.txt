@@ -19,7 +19,7 @@ endif()
 find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
 
 
-add_executable(immersive_checkers main.cpp src/Board.cpp include/Board.hpp)
+add_executable(immersive_checkers main.cpp src/Board.cpp include/Board.hpp src/Board.cpp include/Board.hpp)
 
 
 
