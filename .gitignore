@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# Misc
+src/lua
+.idea
+.fleet
+
+# Cmake
+cmake-build-debug
