@@ -1,20 +1,20 @@
 # Immersive Checkers
 
 ---
-# Overview
+## Overview
 
 
-# Buid
-
-
-
-# Test
+## Buid
 
 
 
-# Play 
+## Test
+
+
+
+## Play 
 
 
 
 ---
-# Architecture
+## Architecture
