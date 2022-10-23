@@ -1,0 +1,11 @@
+#ifndef IMMERSIVE_CHECKERS_BOARD_HPP
+#define IMMERSIVE_CHECKERS_BOARD_HPP
+
+
+class Board
+{
+
+};
+
+
+#endif //IMMERSIVE_CHECKERS_BOARD_HPP
