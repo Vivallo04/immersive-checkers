@@ -2,6 +2,7 @@
 #include "include/Game.hpp"
 #include <boost/log/trivial.hpp>
 
+
 /**
  * @brief Main entry point of the Game
  * @return EXIT_SUCCESS
@@ -10,31 +11,37 @@ int main()
 {
     BOOST_LOG_TRIVIAL(info) << "Starting Game";
     // SFML Logic
-    sf::RenderWindow window(sf::VideoMode(1280, 720), "Immersive Checkers");
     sf::Event event{};
     sf::Clock clock;
 
     // Game
     Game* game = new Game();
 
+    BOOST_LOG_TRIVIAL(info) << "The Game is being drawn";
     while (true)
     {
         sf::Time delta = clock.restart();
-        while(window.pollEvent(event))
+        while (game -> window.pollEvent(event))
         {
-            if(event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed)
             {
-                window.close();
+                game -> window.close();
                 return 0;
+            }
+            if (event.type == sf::Event::Resized)
+            {
+                // update the view to the new size of the window
+                sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
+                game -> window.setView(sf::View(visibleArea));
             }
         }
 
         if (!game -> isGameOver)
             game -> Update(delta.asSeconds());
 
-        window.clear(sf::Color(0, 200, 0, 255));
+        game -> window.clear(sf::Color(0, 200, 0, 255));
 
-        // game -> Draw();
-        window.display();
+        game -> Draw(delta.asSeconds());
+        game -> window.display();
     }
 }
