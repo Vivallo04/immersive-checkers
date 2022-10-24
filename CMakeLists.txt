@@ -15,16 +15,34 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 
+# Boost Asio
+find_package(Boost COMPONENTS log REQUIRED)
+if (Boost_FOUND)
+    set(ASIO_FOUND "YES")
+    include_directories(${Boost_INCLUDE_DIR})
+    ADD_DEFINITIONS( "-DHAS_BOOST")
+    message(STATUS "Boost found and configured")
+    message(STATUS "Directory" ${Boost_INCLUDE_DIR})
+endif()
+
+# Boost Log
+ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
+
+
 # Find SFML shared libraries
 find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
 
 
-add_executable(immersive_checkers main.cpp src/Board.cpp include/Board.hpp src/Board.cpp include/Board.hpp)
-
+add_executable(immersive_checkers main.cpp src/Board.cpp include/Board.hpp src/Board.cpp include/Board.hpp src/Game.cpp include/Game.hpp src/GameUi.cpp include/GameUi.hpp src/util.hpp)
 
 
 # Link executable to required SFML modules
-target_link_libraries(immersive_checkers sfml-graphics sfml-audio)
+target_link_libraries(immersive_checkers
+        sfml-graphics
+        sfml-audio
+        ${Boost_INCLUDE}
+        Boost::boost
+        Boost::log)
 
 
 
