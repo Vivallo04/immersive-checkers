@@ -1,28 +1,47 @@
 #include <SFML/Graphics.hpp>
+#include "include/Game.hpp"
+#include <boost/log/trivial.hpp>
 
+
+/**
+ * @brief Main entry point of the Game
+ * @return EXIT_SUCCESS
+ */
 int main()
 {
-    sf::RenderWindow win(sf::VideoMode(1280, 720), "Immersive Checkers");
+    BOOST_LOG_TRIVIAL(info) << "Starting Game";
+    // SFML Logic
     sf::Event event{};
+    sf::Clock clock;
 
+    // Game
+    Game* game = new Game();
+
+    BOOST_LOG_TRIVIAL(info) << "The Game is being drawn";
     while (true)
     {
-        win.clear(sf::Color(0, 200, 0, 255));
-        while(win.pollEvent(event))
+        sf::Time delta = clock.restart();
+        while (game -> window.pollEvent(event))
         {
-            if(event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed)
             {
-                win.close();
+                game -> window.close();
                 return 0;
             }
-        }
-        {
-            if(event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Resized)
             {
-                win.close();
-                return 0;
+                // update the view to the new size of the window
+                sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
+                game -> window.setView(sf::View(visibleArea));
             }
         }
-        win.display();
+
+        if (!game -> isGameOver)
+            game -> Update(delta.asSeconds());
+
+        game -> window.clear(sf::Color(0, 200, 0, 255));
+
+        game -> Draw(delta.asSeconds());
+        game -> window.display();
     }
 }
