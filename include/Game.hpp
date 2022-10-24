@@ -3,13 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <SFML/Window.hpp>
 #include "Board.hpp"
 
-//sf::RenderWindow window(sf::VideoMode(1280, 720), "Immersive Checkers");
-/*
-sf::Sprite backgroundSprite;
-sf::Vector2f viewSize(1280, 720);
-*/
 
 class Game
 {
@@ -28,15 +24,26 @@ public:
     // Audio
     sf::Music bgMusic;
 
+    // Textures
+    sf::Texture backgroundTexture;
+    sf::Sprite backgroundSprite;
+
+    sf::RenderWindow window;
+
     Game();
-    void Init();
+
     void UpdateInput();
     void Update(float delta);
-    void Draw();
+    void Draw(float delta);
     void Reset();
     void HandleControllerInput();
 
-    Board *board = new Board();
+    Board *board = new Board(window);
+
+private:
+    void Init();
+    void SetView();
+    void DrawBackground(float delta);
 };
 
 
