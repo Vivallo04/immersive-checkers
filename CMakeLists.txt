@@ -33,7 +33,7 @@ ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
 find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
 
 
-add_executable(immersive_checkers main.cpp src/Board.cpp include/Board.hpp src/Board.cpp include/Board.hpp src/Game.cpp include/Game.hpp src/GameUi.cpp include/GameUi.hpp src/util.hpp)
+add_executable(immersive_checkers main.cpp src/Board.cpp include/Board.hpp src/Board.cpp include/Board.hpp src/Game.cpp include/Game.hpp src/GameUi.cpp include/GameUi.hpp src/util.hpp include/Piece.hpp src/Piece.cpp src/Player.cpp include/Player.hpp src/GameState.cpp include/GameState.hpp)
 
 
 # Link executable to required SFML modules
