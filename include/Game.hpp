@@ -5,6 +5,8 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Window.hpp>
 #include "Board.hpp"
+#include "Piece.hpp"
+
 
 
 class Game
@@ -37,7 +39,7 @@ public:
     void Draw(float delta);
     void Reset();
     void HandleControllerInput();
-
+    Piece *piece =  new Piece();
     Board *board = new Board(window);
 
 private:

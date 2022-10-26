@@ -16,7 +16,7 @@ Board::~Board()
 
 void Board::Init()
 {
-    this -> Draw();
+    this -> Draw();// Draw the board
 }
 
 void Board::Draw()
@@ -45,7 +45,7 @@ void Board::Draw()
 
 void Board::Update()
 {
-    //Draw();
+
 }
 
 void Board::HandleEvents()

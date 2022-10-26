@@ -25,7 +25,7 @@ void Game::Init()
     headingText.setString("Immersive Checkers");
     headingText.setCharacterSize(100);
     headingText.setFillColor(sf::Color::White);
-    headingText.setPosition(100, 100);
+    headingText.setPosition(300, 300);
 
     scoreText.setFont(scoreFont);
     scoreText.setString("Score: 0");
