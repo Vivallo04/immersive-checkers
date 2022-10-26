@@ -10,7 +10,8 @@
 #include "stdlib.h"
 #include "time.h"
 
-enum Directions{
+enum Directions
+{
     LEFT,
     RIGHT,
     BACK_LEFT,
@@ -18,11 +19,13 @@ enum Directions{
 };
 
 
-
-class Piece {
+class Piece
+{
 public:
     Piece();
+
     void setPoint(int, int);
+
     bool isQueen();//This method permits to know if the piece is a queen
 
     void makeQueen();//This method permits to make a piece a queen
@@ -33,7 +36,8 @@ public:
 
     int potential;// This variable permits to know the potential of the piece
 
-    int directionValues[4] = {-999,-999,-999,-999};// This array permits to know the potential of the piece in each direction
+    int directionValues[4] = {-999, -999, -999,
+                              -999};// This array permits to know the potential of the piece in each direction
 
     Directions bestDirection;// This variable permits to know the best direction of the piece
 
@@ -44,7 +48,6 @@ public:
 private:
     bool queen;// This variable permits to know if the piece is a queen
 };
-
 
 
 #endif //IMMERSIVE_CHECKERS_PIECE_H

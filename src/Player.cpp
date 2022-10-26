@@ -4,13 +4,13 @@
 
 #include "../include/Player.hpp"
 
-Player::Player(bool, Board *, ArduinoButton *) {
+//Player::Player(bool, Board *, ArduinoButton *) {
 
-}
+//}
 
-Player::~Player() {
+//Player::~Player() {
 
-}
+//}
 
 void Player::InitTeam() {
 
