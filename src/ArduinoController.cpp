@@ -14,7 +14,8 @@ ArduinoController::ArduinoController()
 }
 
 int *ArduinoController::ChoosePosition()
-{//Move the cursor to the position and press the button
+{
+    //Move the cursor to the position and press the button
 
     return 0;
 }

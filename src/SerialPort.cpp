@@ -8,13 +8,15 @@
 #include <errno.h> // Error integer and strerror() function
 #include <termios.h> // Contains POSIX terminal control definitions
 #include <unistd.h> // write(), read(), close()
+#include <boost/log/trivial.hpp>
 
 SerialPort::SerialPort(const char *portName)
 {
     serialPort = open(portName, O_RDWR);
     if (serialPort == -1)
     {
-        std::cout << "Error " << errno << " opening " << portName << ": " << strerror(errno) << std::endl;
+        BOOST_LOG_TRIVIAL(error) << "Error " << errno << " opening " << portName << ": " << strerror(errno);
+
     }
     else
     {
