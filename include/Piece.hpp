@@ -1,19 +1,13 @@
-//
-// Created by josev on 24/10/22.
-//
-
 #ifndef IMMERSIVE_CHECKERS_PIECE_H
 #define IMMERSIVE_CHECKERS_PIECE_H
 
-#include "vector"
-#include "cstdlib"
-#include "stdlib.h"
-#include "time.h"
+#include "Board.hpp"
+#include <SFML/Graphics.hpp>
 
 enum Directions
 {
-    LEFT,
-    RIGHT,
+    UP_LEFT,
+    UP_RIGHT,
     BACK_LEFT,
     BACK_RIGHT
 };
@@ -22,31 +16,37 @@ enum Directions
 class Piece
 {
 public:
-    Piece();
-
-    void setPoint(int, int);
-
-    bool isQueen();//This method permits to know if the piece is a queen
-
-    void makeQueen();//This method permits to make a piece a queen
-
-    int x;//This variable permits to know the x position of the piece
-
-    int y;// This variable permits to know the y position of the piece
-
-    int potential;// This variable permits to know the potential of the piece
-
-    int directionValues[4] = {-999, -999, -999,
-                              -999};// This array permits to know the potential of the piece in each direction
-
-    Directions bestDirection;// This variable permits to know the best direction of the piece
-
-    void findBestDirection();// This method permits to find the best direction of the piece
-
-    void findLargestPotential();// This method permits to find the largest potential of the piece
+    explicit Piece(Board& board);
+    void Init();
+    void SetPoint(int x, int y);
+    bool IsQueen() const;
+    void MakeQueen();//This method permits to make a piece a isQueen
+    void FindBestDirection();// This method permits to find the best direction of the piece
+    void FindLargestPotential();// This method permits to find the largest potential of the piece
+    void DrawCheckersOnBoard();
+    void PopulatePieceOnBoard();
+    void Move();
+    void CenterInBoard();
 
 private:
-    bool queen;// This variable permits to know if the piece is a queen
+    // Graphics
+    int checkersSize = 50;
+
+    // In-game position
+    int xPos; // This variable permits to know the xPos position of the piece
+    int yPos; // This variable permits to know the yPos position of the piece
+
+    // Attributes
+    int potential; // This variable permits to know the potential of the piece
+    Board *board;
+    Directions bestDirection; // This variable permits to know the best direction of the piece
+    int directionValues[4] = {-999, -999, -999,-999};// This array permits to know the potential of the piece in each direction
+    bool isQueen; // This variable permits to know if the piece is a isQueen
+
+
+    // SFML
+    sf::Texture checkerTexture;
+    sf::Sprite checkerSprite;
 };
 
 

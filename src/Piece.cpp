@@ -1,51 +1,40 @@
-//
-// Created by josev on 24/10/22.
-//
-
-
-
 #include "../include/Piece.hpp"
+//#include "../src/util.hpp"
 
-Directions QueenMoves[4] = {LEFT, RIGHT, BACK_LEFT, BACK_RIGHT};
+Directions QueenMoves[4] = {UP_LEFT, UP_RIGHT, BACK_LEFT, BACK_RIGHT};
+Directions pieceMoves[2] = {UP_LEFT, UP_RIGHT};
 
-Directions pieceMoves[2] = {LEFT, RIGHT};
-
-Piece::Piece()
+Piece::Piece(Board& board)
 {
-
-    x = 0;
-    y = 0;
+    this -> board = &board;
+    xPos = 0;
+    yPos = 0;
     potential = -99999999;
-    queen = false;
+    isQueen = false;
 
 }
 
-void Piece::setPoint(int xLocation, int yLocation)
+void Piece::Init()
 {
-    x = xLocation;
-    y = yLocation;
-
+    // texture
+    //LoadTexture(checkerTexture, "assets/checker.png");
 }
 
-
-bool Piece::isQueen()
+void Piece::PopulatePieceOnBoard()
 {
-    return queen;
 
 }
 
-
-void Piece::makeQueen()
+void Piece::DrawCheckersOnBoard()
 {
-    queen = true;
+    checkerSprite.setTexture(checkerTexture);
+    checkerSprite.setPosition(xPos * checkersSize, yPos * checkersSize);
 
 }
 
-
-void Piece::findLargestPotential()
+void Piece::FindLargestPotential()
 {
     int largest = directionValues[0];
-
     for (int i = 1; i < 4; i++)
     {
         if (largest < directionValues[i])
@@ -56,8 +45,7 @@ void Piece::findLargestPotential()
     potential = largest;
 }
 
-
-void Piece::findBestDirection()
+void Piece::FindBestDirection()
 {
     int largest = directionValues[0];
     std::vector<int> largestVector;
@@ -81,15 +69,39 @@ void Piece::findBestDirection()
     srand(static_cast<unsigned int>(time(NULL)));
     int bestIndex = rand() % largestVector.size();
 
-    for (int k = 0; k < 4; k++)
+    for (auto & QueenMove : QueenMoves)
     {
-        if (QueenMoves[k] == largestVector[bestIndex])
+        if (QueenMove == largestVector[bestIndex])
         {
-            bestDirection = QueenMoves[k];
+            bestDirection = QueenMove;
         }
     }
 
 }
 
+void Piece::SetPoint(int x, int y)
+{
+    this -> xPos = x;
+    this -> yPos = y;
 
+}
 
+bool Piece::IsQueen() const
+{
+    return isQueen;
+}
+
+void Piece::MakeQueen()
+{
+    isQueen = true;
+}
+
+void Piece::Move()
+{
+
+}
+
+void Piece::CenterInBoard()
+{
+
+}
