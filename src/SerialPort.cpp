@@ -17,7 +17,8 @@ SerialPort::SerialPort(const char *portName)
     {
         BOOST_LOG_TRIVIAL(error) << "Error " << errno << " opening " << portName << ": " << strerror(errno);
 
-    } else
+    }
+    else
     {
         connected = true;
         fcntl(serialPort, F_SETFL, 0);
@@ -55,10 +56,9 @@ char SerialPort::getKeypadInput()
     char keypadCord = readSerialPort(bufferkey, sizeof(bufferkey));
 
     int counter = 0;
-    while (counter < 2)
-    {//read the two first touches of the keypad
+    while (counter <2){//read the two first touches of the keypad
         readSerialPort(bufferkey, sizeof(bufferkey));
-        counter++;
+        counter ++;
     }
     return keypadCord;
 
