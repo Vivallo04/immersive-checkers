@@ -15,9 +15,9 @@ public:
 
 private:
     sf::RenderWindow *gameWindow;
-    int boardPositionX = 0;
-    int boardPositionY = 0;
-    int tileSize = 30;
+    int boardPositionX = (int) gameWindow->getView().getSize().x / 2000;
+    int boardPositionY = (int) gameWindow->getView().getSize().y / 4;
+    int tileSize = 60;
     int boardSize = 8;
 
     void Draw();

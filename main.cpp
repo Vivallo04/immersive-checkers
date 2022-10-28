@@ -2,6 +2,22 @@
 #include "include/Game.hpp"
 #include <boost/log/trivial.hpp>
 
+//TODO: HANDLE EVENTS
+// - Populate the board
+// - Resize background
+// - Infinite Scroll
+// - Game logic
+// - Player UI
+// - Score and UX
+// - Arduino Integration
+// - Backtracking Algorithm logic
+// - AI logic
+// - Mouse Controls
+// - Sound Effects
+// - Update Azure
+// - Internal documentation
+// - Update README
+// - Class Diagram
 
 /**
  * @brief Main entry point of the Game
@@ -39,7 +55,7 @@ int main()
         if (!game -> isGameOver)
             game -> Update(delta.asSeconds());
 
-        game -> window.clear(sf::Color(0, 200, 0, 255));
+        game -> window.clear(sf::Color(255, 255, 255, 255));
 
         game -> Draw(delta.asSeconds());
         game -> window.display();
