@@ -42,7 +42,7 @@ int main()
             if (event.type == sf::Event::Closed)
             {
                 game -> window.close();
-                return 0;
+                return EXIT_SUCCESS;
             }
             if (event.type == sf::Event::Resized)
             {
