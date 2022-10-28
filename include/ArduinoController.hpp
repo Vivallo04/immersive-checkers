@@ -15,8 +15,8 @@ class ArduinoController
 public://Arduino keypad functions
 
     ArduinoController();//Constructor
-    int* ChoosePosition();//Move the cursor to the position and press the button
-    int Checkposition();//Check if the position is occupied
+    int* MoveCursor();//Move the cursor to the position and press the button
+    bool Checkposition();//Check if the position is occupied
     int *MovePiece();//Move the piece to the position
     int closeSerialPort();//Close the serial port
 
