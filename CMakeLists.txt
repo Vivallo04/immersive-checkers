@@ -3,10 +3,6 @@ project(immersive_checkers)
 
 set(CMAKE_CXX_STANDARD 20)
 
-
-## If you want to link SFML statically
-# set(SFML_STATIC_LIBRARIES TRUE)
-
 # Enable debug symbols by default
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug

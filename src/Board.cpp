@@ -6,7 +6,7 @@
 Board::Board(sf::RenderWindow &gameWindow)
 {
     BOOST_LOG_TRIVIAL(info) << "Board constructor called";
-    this -> gameWindow = &gameWindow;
+    this->gameWindow = &gameWindow;
 }
 
 Board::~Board()
@@ -16,7 +16,7 @@ Board::~Board()
 
 void Board::Init()
 {
-    this -> Draw();
+    this->Draw();
 }
 
 void Board::Draw()
@@ -28,16 +28,15 @@ void Board::Draw()
             if ((i + j) % 2 == 0)
             {
                 sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
-                rect.setPosition(i * tileSize, j * tileSize);
+                rect.setPosition(boardPositionX + (i * tileSize), boardPositionY + (j * tileSize));
                 rect.setFillColor(sf::Color(255, 207, 159, 255));
-                gameWindow -> draw(rect);
-            }
-            else
+                gameWindow->draw(rect);
+            } else
             {
                 sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
-                rect.setPosition(i * tileSize, j * tileSize);
+                rect.setPosition(boardPositionX + (i * tileSize), boardPositionY + (j * tileSize));
                 rect.setFillColor(sf::Color(209, 139, 71, 255));
-                gameWindow -> draw(rect);
+                gameWindow->draw(rect);
             }
         }
     }
@@ -50,6 +49,5 @@ void Board::Update()
 
 void Board::HandleEvents()
 {
-
 
 }

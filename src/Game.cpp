@@ -6,8 +6,6 @@ Game::Game(): window(sf::VideoMode(1280, 720, 32), "Immersive Checkers")
 {
     Init();
     window.setVerticalSyncEnabled(true);
-    sf::Vector2f viewSize(1280, 720);
-
 }
 
 void Game::Init()
