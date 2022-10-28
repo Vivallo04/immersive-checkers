@@ -20,12 +20,6 @@ public://Arduino keypad functions
     int *MovePiece();//Move the piece to the position
     int closeSerialPort();//Close the serial port
 
-
-
-
-
-
-
     SerialPort *serialport;
 };
 

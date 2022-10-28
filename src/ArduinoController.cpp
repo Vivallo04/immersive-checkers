@@ -9,14 +9,11 @@ ArduinoController::ArduinoController()
 {
     //This instance permits to open the serial port and also to check if it is connected
     serialport = new SerialPort("/dev/ttyACM0");
-
-
 }
 
 int *ArduinoController::ChoosePosition()
 {
     //Move the cursor to the position and press the button
-
     return 0;
 }
 
