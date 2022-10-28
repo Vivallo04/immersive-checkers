@@ -63,7 +63,7 @@ char SerialPort::getKeypadInput()
     return keypadCord;
 
 }
-
+//
 int SerialPort::closeSerialPort()
 {
     close(serialPort);
