@@ -16,6 +16,7 @@ Board::~Board()
 
 void Board::Init()
 {
+    this->InitBoard();
     this -> Draw();
 }
 
@@ -31,7 +32,7 @@ void Board::Draw()
                 rect.setPosition(boardPositionX + (i * tileSize), boardPositionY + (j * tileSize));
                 rect.setFillColor(sf::Color(255, 207, 159, 255));
                 gameWindow -> draw(rect);
-            }else
+            } else
             {
                 sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
                 rect.setPosition(boardPositionX + (i * tileSize), boardPositionY + (j * tileSize));
@@ -40,6 +41,16 @@ void Board::Draw()
             }
         }
     }
+}
+
+void Board::InitBoard()
+{
+
+}
+
+void Board::PopulateBoard(Piece &piece)
+{
+    //
 }
 
 void Board::Update()
