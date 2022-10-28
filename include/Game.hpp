@@ -8,7 +8,6 @@
 #include "Piece.hpp"
 
 
-
 class Game
 {
 public:
@@ -32,16 +31,14 @@ public:
 
     sf::RenderWindow window;
 
-    Game();
+    Board* board = new Board(window);
 
+    Game();
     void UpdateInput();
     void Update(float delta);
     void Draw(float delta);
     void Reset();
     void HandleControllerInput();
-    Piece *piece =  new Piece();
-    Board *board = new Board(window);
-
 private:
     void Init();
     void SetView();
