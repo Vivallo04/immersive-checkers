@@ -32,7 +32,7 @@ find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
 add_executable(immersive_checkers main.cpp src/PlayState.cpp
         include/PlayState.hpp src/GameUi.cpp include/GameUi.hpp src/util.hpp
         include/ArduinoController.hpp src/ArduinoController.cpp
-        src/Keypadhandler.ino include/SerialPort.h src/SerialPort.cpp src/StateMachine.cpp include/StateMachine.hpp include/BaseState.hpp src/Board.cpp include/Board.hpp src/Tile.cpp include/Tile.hpp src/Checker.cpp include/Checker.hpp src/ComputerAI.cpp src/ComputerAI.hpp)
+        src/Keypadhandler.ino include/SerialPort.h src/SerialPort.cpp src/StateMachine.cpp include/StateMachine.hpp include/BaseState.hpp src/Board.cpp include/Board.hpp src/Tile.cpp include/Tile.hpp src/Checker.cpp include/Checker.hpp src/ComputerAI.cpp src/ComputerAI.hpp src/Piece.cpp include/Piece.hpp)
 
 
 # Link executable to required SFML modules
