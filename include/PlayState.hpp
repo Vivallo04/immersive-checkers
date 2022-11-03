@@ -1,18 +1,22 @@
-#ifndef IMMERSIVE_CHECKERS_GAME_HPP
-#define IMMERSIVE_CHECKERS_GAME_HPP
+#ifndef IMMERSIVE_CHECKERS_PLAYSTATE_HPP
+#define IMMERSIVE_CHECKERS_PLAYSTATE_HPP
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Window.hpp>
+#include "../include/BaseState.hpp"
 #include "Board.hpp"
-#include "Piece.hpp"
 
 
-class Game
+class PlayState: public BaseState
 {
 public:
+    // Window
+    int windowWidth = 1280;
+    int windowHeight = 720;
+
     // Logic
-    float currentTime{};
+    //float currentTime{};
     float prevTime = 0.0f;
     bool isGameOver = false;
 
@@ -29,21 +33,20 @@ public:
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
 
+    // -- Game Objects --
     sf::RenderWindow window;
-
     Board* board = new Board(window);
 
-    Game();
-    void UpdateInput();
-    void Update(float delta);
+    PlayState();
+    void Update(float delta) override;
     void Draw(float delta);
-    void Reset();
-    void HandleControllerInput();
+
 private:
-    void Init();
+    sf::Clock clock;
+    void Init() override;
     void SetView();
     void DrawBackground(float delta);
 };
 
 
-#endif //IMMERSIVE_CHECKERS_GAME_HPP
+#endif //IMMERSIVE_CHECKERS_PLAYSTATE_HPP

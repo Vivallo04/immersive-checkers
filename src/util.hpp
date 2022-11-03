@@ -46,7 +46,7 @@ void LoadMusic(sf::Music &music, const std::string &path)
     BOOST_LOG_TRIVIAL(info) << "Loaded music from " << path;
 }
 
-void ResizeTexture(sf::Texture &texture, float width, float height)
+sf::Sprite ResizeTexture(sf::Texture &texture, float width, float height)
 {
     sf::Sprite sprite;
     sf::Vector2f targetSize(width, height);
@@ -56,4 +56,5 @@ void ResizeTexture(sf::Texture &texture, float width, float height)
         targetSize.y / sprite.getLocalBounds().height
     );
     BOOST_LOG_TRIVIAL(info) << "Resized texture to " << width << "x" << height;
+    return sprite;
 }

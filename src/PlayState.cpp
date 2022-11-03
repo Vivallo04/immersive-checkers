@@ -1,15 +1,17 @@
-#include "../include/Game.hpp"
+#include "../include/PlayState.hpp"
 #include "../src/util.hpp"
 #include <SFML/Graphics.hpp>
 
-Game::Game(): window(sf::VideoMode(1280, 720, 32), "Immersive Checkers")
+PlayState::PlayState(): window(sf::VideoMode(windowWidth, windowHeight, 32), "Immersive Checkers")
 {
     Init();
     window.setVerticalSyncEnabled(true);
+    window.setKeyRepeatEnabled(false);
 }
 
-void Game::Init()
+void PlayState::Init()
 {
+    BOOST_LOG_TRIVIAL(info) << "Initializing Play State";
     // font
     LoadFont(headingFont, "../assets/fonts/font.ttf");
 
@@ -17,7 +19,8 @@ void Game::Init()
     LoadMusic(bgMusic, "../assets/sound/music3.wav");
 
     // texture
-    LoadTexture(backgroundTexture, "../assets/graphics/background.png");
+    LoadTexture(backgroundTexture, "../assets/graphics/day_sky.png");
+    backgroundTexture.setRepeated(true);
 
     headingText.setFont(headingFont);
     headingText.setString("Immersive Checkers");
@@ -36,53 +39,43 @@ void Game::Init()
     //bgMusic.play();
 }
 
-void Game::UpdateInput()
+void PlayState::Update(float delta)
 {
 
 }
 
-void Game::Update(float delta)
-{
-
-}
-
-void Game::SetView()
+void PlayState::SetView()
 {
     sf::Vector2f viewSize(1024, 576);
     sf::View view(sf::FloatRect(0, 0, viewSize.x, viewSize.y));
 
     view.zoom(1.0f);
     window.setView(view);
-
 }
 
 
-void Game::Draw(float delta)
+void PlayState::Draw(float delta)
 {
     this -> SetView();
-
     backgroundSprite.setTexture(backgroundTexture);
+    backgroundSprite.setTextureRect({200, 200, 1280, 720});
     window.draw(backgroundSprite);
-    DrawBackground(delta);
+    //DrawBackground(delta);
     board -> Init();
-}
-
-void Game::Reset()
-{
-    BOOST_LOG_TRIVIAL(info) << "The game has been reset";
-}
-
-void Game::HandleControllerInput()
-{
+    board -> RenderPieces();
+    board -> HandleEvents();
 
 }
 
-void Game::DrawBackground(float delta)
+void PlayState::DrawBackground(float delta)
 {
-    int backgroundSpeed = 400;
+    int backgroundSpeed = 200;
     if ((backgroundSprite.getPosition().x + backgroundSprite.getScale().x) < -1000)
     {
-        backgroundSprite.setPosition((window.getSize().x), (backgroundSprite.getPosition().y));
+        backgroundSprite.setPosition((1280), (backgroundSprite.getPosition().y));
+    } else
+    {
+
     }
     backgroundSprite.move(-delta * backgroundSpeed, 0);
 }
