@@ -2,7 +2,7 @@
 
 /*
 	Checkers
-	Created by Aaron Singh
+	By: Jose Vargas
 	
 	Input comes through getSquare(), getTarget(), getConsecutiveJmpTarget(), and playAgain().
 	

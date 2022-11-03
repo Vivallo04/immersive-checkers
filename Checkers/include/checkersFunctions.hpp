@@ -9,6 +9,10 @@
 using namespace checkers;
 #include <string>
 #include <iostream>
+#include "ArduinoController.hpp"
+
+
+
 
 void prepareGame();
 
@@ -21,7 +25,7 @@ bool cannotMakeMove();
 bool possibleMovement(sq::Square *initSq);
 
 void getSquare();
-bool goodSquare(std::string sq);
+bool goodSquare(std::string sq);//returns true if square is valid
 void getTarget();
 bool goodTarget(std::string sq);
 bool oneFrSqAway();

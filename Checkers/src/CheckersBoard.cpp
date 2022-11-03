@@ -148,17 +148,41 @@ void Board::drawPieces(sf::RenderWindow &window,
   }
 }
 
-std::string Board::interpretClick(sf::Event &what, std::vector<sq::Square> &squares_list) {
+std::string Board::interpretClick(sf::Event &what, std::vector<sq::Square> &squares_list)
+{
+
   for (unsigned i = 0; i < ch::Square::last; ++i) {
+
+      std::cout << "Square " << i << " is at " << squaresVect[i].getPosition().x << ", " << squaresVect[i].getPosition().y << std::endl;
+
     if (what.mouseButton.x > squaresVect[i].getPosition().x &&
         what.mouseButton.x < squaresVect[i].getPosition().x + squaresVect[i].getSize().x &&
         what.mouseButton.y > squaresVect[i].getPosition().y &&
         what.mouseButton.y < squaresVect[i].getPosition().y + squaresVect[i].getSize().y) {
+        //std::cout<<"Mouse button pressed"<<what.mouseButton.x<<","<<what.mouseButton.y<<std::endl;
+        //std::cout << "Square " << i << " was clicked" << std::endl;
+        //std::cout<< "Square is the following one "<< squares_list[i].square() << std::endl;
         return squares_list[i].square();
+
         }
   } 
   return "click_not_interpreted";
 }
+
+    std::string Board::interpretArduinoClick(sf::Event &what,std::vector<sq::Square> &squares_list, int x, int y)
+    {
+        for (unsigned i = 0; i < ch::Square::last; ++i) {
+            if (x >= squaresVect[i].getPosition().x &&
+                x <= squaresVect[i].getPosition().x + squaresVect[i].getSize().x &&
+                y >= squaresVect[i].getPosition().y &&
+                y <= squaresVect[i].getPosition().y + squaresVect[i].getSize().y) {
+                std::cout << "Square " << i << " was clicked" << std::endl;
+                std::cout << "Square is the following one " << squares_list[i].square() << std::endl;
+                return squares_list[i].square();
+            }
+        }
+        return "click_not_interpreted";
+    }
 
 
 // Private functions:
@@ -208,5 +232,7 @@ void Board::adjustSquaresPositions(const sf::Vector2f &positionalChange) {
 			             squaresVect[i].getPosition().y + positionalChange.y));
 	}
 }
+
+
 
 } // namespace ch

@@ -1,6 +1,6 @@
 
 #include "../include/checkersFunctions.hpp"
-
+ArduinoController arduinoController;
 void prepareGame() {
 	//prepare variables:
 	selection = " ";
@@ -43,41 +43,188 @@ std::string get_GUI_Input() {
   }
 
   sf::Texture help_guide;
-  help_guide.loadFromFile("Resources/Images/help.png");
+  help_guide.loadFromFile("/home/josev/CLionProjects/immersive-checkers/Checkers/Resources/graphics/help.png");
   sf::Sprite help(help_guide);
   help.setPosition(sf::Vector2f(650.0f, 200.0f));
 
-  while (gameBoard.getWindow()->isOpen()) {
-    sf::Event what;
+  while (gameBoard.getWindow()->isOpen())
+  {
+      sf::Event what;
 
-    while (gameBoard.getWindow()->pollEvent(what)) {
-      switch (what.type) {
-      case sf::Event::Closed:
-        gameBoard.getWindow()->close();
-        return "quit";
-      case sf::Event::MouseButtonPressed:
-        result = gameBoard.interpretClick(what, checkers::squares);
-        return result;
-        break;
-      case sf::Event::KeyReleased:
-        switch (what.key.code) {
-          case sf::Keyboard::H:
-            // to display the helpful guide
-            return "h";
-          case sf::Keyboard::Q:
-            // to quit
-            return "q";
-          case sf::Keyboard::R:
-            // to reset (in case a piece that cannot be moved is picked)
-            return "r";
-          case sf::Keyboard::S:
-            // to skip the option to do a consecutive jump
-            return "s";
-        }
-      default:
-        break;
+      while (gameBoard.getWindow()->pollEvent(what))
+      {
+          switch (what.type)
+          {
+              case sf::Event::Closed:
+              {
+                  gameBoard.getWindow()->close();
+                  return "quit";
+              }
+              case sf::Event::MouseButtonPressed:
+              {
+                  /*std::string name_of_piece = arduinoController.getInitCords();
+                  int x_cord;
+                  int y_cord;
+                  //make it with if statements
+                  if (name_of_piece == "a1")
+                  {
+                      int x_cord = 20;
+                      int y_cord = 545;
+                  } else if (name_of_piece == "c1")
+                  {
+                      int x_cord = 170;
+                      int y_cord = 545;
+                  } else if (name_of_piece == "e1")
+                  {
+                      int x_cord = 320;
+                      int y_cord = 545;
+                  } else if (name_of_piece == "g1")
+                  {
+                      int x_cord = 470;
+                      int y_cord = 545;
+                  } else if (name_of_piece == "b2")
+                  {
+                      int x_cord = 95;
+                      int y_cord = 470;
+                  } else if (name_of_piece == "d2")
+                  {
+                      int x_cord = 245;
+                      int y_cord = 470;
+                  } else if (name_of_piece == "f2")
+                  {
+                      int x_cord = 395;
+                      int y_cord = 470;
+                  } else if (name_of_piece == "h2")
+                  {
+                      int x_cord = 545;
+                      int y_cord = 470;
+                  } else if (name_of_piece == "a3")
+                  {
+                      int x_cord = 20;
+                      int y_cord = 395;
+                  } else if (name_of_piece == "c3")
+                  {
+                      int x_cord = 170;
+                      int y_cord = 395;
+                  } else if (name_of_piece == "e3")
+                  {
+                      int x_cord = 320;
+                      int y_cord = 395;
+                  } else if (name_of_piece == "g3")
+                  {
+                      int x_cord = 470;
+                      int y_cord = 395;
+                  } else if (name_of_piece == "b4")
+                  {
+                      int x_cord = 95;
+                      int y_cord = 320;
+                  } else if (name_of_piece == "d4")
+                  {
+                      int x_cord = 245;
+                      int y_cord = 320;
+                  } else if (name_of_piece == "f4")
+                  {
+                      int x_cord = 395;
+                      int y_cord = 320;
+                  } else if (name_of_piece == "h4")
+                  {
+                      int x_cord = 545;
+                      int y_cord = 320;
+                  } else if (name_of_piece == "a5")
+                  {
+                      int x_cord = 20;
+                      int y_cord = 245;
+                  } else if (name_of_piece == "c5")
+                  {
+                      int x_cord = 170;
+                      int y_cord = 245;
+                  } else if (name_of_piece == "e5")
+                  {
+                      int x_cord = 320;
+                      int y_cord = 245;
+                  } else if (name_of_piece == "g5")
+                  {
+                      int x_cord = 470;
+                      int y_cord = 245;
+                  } else if (name_of_piece == "b6")
+                  {
+                      int x_cord = 95;
+                      int y_cord = 170;
+                  } else if (name_of_piece == "d6")
+                  {
+                      int x_cord = 245;
+                      int y_cord = 170;
+                  } else if (name_of_piece == "f6")
+                  {
+                      int x_cord = 395;
+                      int y_cord = 170;
+                  } else if (name_of_piece == "h6")
+                  {
+                      int x_cord = 545;
+                      int y_cord = 170;
+                  } else if (name_of_piece == "a7")
+                  {
+                      int x_cord = 20;
+                      int y_cord = 95;
+                  } else if (name_of_piece == "c7")
+                  {
+                      int x_cord = 170;
+                      int y_cord = 95;
+                  } else if (name_of_piece == "e7")
+                  {
+                      int x_cord = 320;
+                      int y_cord = 95;
+                  } else if (name_of_piece == "g7")
+                  {
+                      int x_cord = 470;
+                      int y_cord = 95;
+                  } else if (name_of_piece == "b8")
+                  {
+                      int x_cord = 95;
+                      int y_cord = 20;
+                  } else if (name_of_piece == "d8")
+                  {
+                      int x_cord = 245;
+                      int y_cord = 20;
+                  } else if (name_of_piece == "f8")
+                  {
+                      int x_cord = 395;
+                      int y_cord = 20;
+                  } else if (name_of_piece == "h8")
+                  {
+                      int x_cord = 545;
+                      int y_cord = 20;
+                  }
+
+                  result = gameBoard.interpretArduinoClick(what, checkers::squares, x_cord, y_cord);*/
+                  result = gameBoard.interpretClick(what, checkers::squares);
+                  std::cout << "result: " << result << std::endl;
+                  return result;
+                  break;
+              }
+              case sf::Event::KeyReleased:
+              {
+                  switch (what.key.code)
+                  {
+                      case sf::Keyboard::H:
+                          // to display the helpful guide
+                          return "h";
+                      case sf::Keyboard::Q:
+                          // to quit
+                          return "q";
+                      case sf::Keyboard::R:
+                          // to reset (in case a piece that cannot be moved is picked)
+                          return "r";
+                      case sf::Keyboard::S:
+                          // to skip the option to do a consecutive jump
+                          return "s";
+                  }
+                  default:
+                      break;
+              }
+          }
       }
-    }
+
 
     gameBoard.getWindow()->clear();
     gameBoard.draw(*gameBoard.getWindow(), checkers::squares);

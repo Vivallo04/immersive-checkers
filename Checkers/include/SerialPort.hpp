@@ -26,16 +26,21 @@ class SerialPort
 public:
 
     SerialPort(const char *portName);//constructor
-    ~SerialPort();
+    int readSerialPort();//read data from serial port
     char getKeypadInput();//read the two first touches of the keypad
-    char readSerialPort(char *buffer, unsigned int buf_size);//read data from serial port
-    char writeSerialPort(char *buffer, unsigned int buf_size);//write data to serial port
+    int writeSerialPort(char data_read);//write data to serial port
     int closeSerialPort();//close serial port
+
+    int getSerialPort();
+
+    void available();
 
 private:
     int serialPort;//declare serial port
     bool connected;//check if the serial port is connected
 };
+
+
 
 
 

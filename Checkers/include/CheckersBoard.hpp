@@ -7,6 +7,7 @@
 #include "square.hpp"
 #include "CheckersSquare.hpp"
 #include "CheckersPiece.hpp"
+#include "ArduinoController.hpp"
 
 namespace ch {
 
@@ -59,7 +60,7 @@ class Board {
                  std::vector<sq::Square> &updates);
 
   std::string interpretClick(sf::Event &what, std::vector<sq::Square> &squares);
-
+  std::string interpretArduinoClick(sf::Event &what ,std::vector<sq::Square> &squares, int x, int y);
  private:
   
   // The window that the board will be drawn to.
