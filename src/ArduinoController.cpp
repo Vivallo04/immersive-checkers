@@ -86,7 +86,7 @@ int *ArduinoController::MoveCursor(int x,int y)
                 {
                     //Move the cursor to the down
                     int i = i+1;
-                    cursorpositionreal = boardmatrix[i+1][j];
+                    cursorpositionreal = boardmatrix[i][j];
                     return MoveCursor(i,j);
                 }
                 case '5':
@@ -97,6 +97,9 @@ int *ArduinoController::MoveCursor(int x,int y)
                     if (occupied)
                     {
                        selected_piece = true;
+                        MovePiece(i,j);
+
+
                         break;
                     }
                     std::cout<<"The piece isn't occupied by your pieces, please choose another one"<<std::endl;
@@ -115,76 +118,156 @@ int *ArduinoController::MoveCursor(int x,int y)
     return nullptr;
 }
 
+/*
+ * Inicializar al funcion moveCursor
+ * Quedaría con un
+ * Llamaría a movePiece dentro de move Cursor, esto con el objetivo de obtener el lugar en donde se quiere mover la pieza
+ */
 
 
 
 
-
-int *ArduinoController::MovePiece()
+int *ArduinoController::MovePiece(int x, int y)
 {
-    char movementpiece;
-    //get the numbers of rows
+    int row = x;
+    int column = y;
+    //Move the piece to the position
+    char movementtype;
+    movementtype = serialport->getKeypadInput();
+    //Make the cases based on the keypad input recursively
 
-    //Second we have to iterate the matrix made to synchronize the position of the cursor with the keypad input
-    for (int i = 0; i <rows_size ; ++i)
+    switch (movementtype)
     {
-        for (int j = 0; j < columns_size; ++j)
+        case '3':
         {
-            //Initialize where the cursor is going to be
-            int cursorposition[2] = {4,4};
-            movementpiece = serialport->getKeypadInput();
-            //Make the cases based on the keypad input recursively
-
-            switch (movementpiece)
+            //Move the piece diagonally right up
+            //Piece first position
+            int pieceoriginalposition = boardmatrix[row][column];
+            x = x - 1;
+            y = y + 1;
+            //Piece position diagonally
+            int piecepositionreal = boardmatrix[x][y];
+            //Piece position x2 diagonally
+            int pieceposposition = boardmatrix[x - 1][y + 1];
+            if (piecepositionreal == 3 && pieceposposition == 1)
             {
-                case '3'://Move the piece diagonally to the right up
-
-                    cursorposition[1] = cursorposition[1] + 1;
-                    cursorposition[0] = cursorposition[0] - 1;
-                    return MovePiece();
-                case '1'://Move the piece diagonally to the left up
-                    cursorposition[1] = cursorposition[1] - 1;
-                    cursorposition[0] = cursorposition[0] - 1;
-                    return MovePiece();
-                if(Queen){
-                    case '7'://Move the piece diagonally to the left up
-                        cursorposition[1] = cursorposition[1] - 1;
-                        cursorposition[0] = cursorposition[0] + 1;
-                    return MovePiece();
-                    case '9'://Move the piece diagonally to the right up
-                        cursorposition[1] = cursorposition[1] + 1;
-                        cursorposition[0] = cursorposition[0] + 1;
-                    return MovePiece();
-                }
-                case '5'://Press the button
-                    //occupied_mypiece = Checkposition();
-                    if (!occupied_mypiece)
-                    {
-                        boardmatrix[cursorposition[0]][cursorposition[1]] = 1;
-                    }
-                    return MovePiece();
-                case 'D'://Cancel the position chosen
-                    //occupied_mypiece = Checkposition();
-                    if (!occupied_mypiece)
-                    {
-                        boardmatrix[cursorposition[0]][cursorposition[1]] = 0;
-                    }
-                    return MovePiece();
-                default:
-                    return MovePiece();
+                pieceoriginalposition = 1;
+                piecepositionreal = 1;
+                pieceposposition = 2;
+                break;
             }
+            if (piecepositionreal == 1)
+            {
+                pieceoriginalposition = 1;
+                piecepositionreal = 2;
+                break;
+            }
+            if (piecepositionreal == 3 && pieceposposition == 3)
+            {
+                std::cout << "You can't move the piece to this position, please choose another one" << std::endl;
+                return MovePiece(row, column);
+            }
+            break;
+
+        }
+        case '1':
+        {
+            //Move the piece diagonally left up
+            //Piece first position
+            int pieceoriginalposition = boardmatrix[row][column];
+            x = x - 1;
+            y = y - 1;
+            //Piece position diagonally
+            int piecepositionreal = boardmatrix[x][y];
+            //Piece position x2 diagonally
+            int pieceposposition = boardmatrix[x - 1][y - 1];
+            if (piecepositionreal == 3 && pieceposposition == 1)
+            {
+                pieceoriginalposition = 1;
+                piecepositionreal = 1;
+                pieceposposition = 2;
+                break;
+            }
+            if (piecepositionreal == 1)
+            {
+                pieceoriginalposition = 1;
+                piecepositionreal = 2;
+                break;
+            }
+            if (piecepositionreal == 3 && pieceposposition == 3)
+            {
+                std::cout << "You can't move the piece to this position, please choose another one" << std::endl;
+                return MovePiece(row, column);
+            }
+            break;
+        }
+        case '7':
+        {
+            //If(Queen){
+            //Move the piece diagonally left down
+            //Piece first position
+            int pieceoriginalposition = boardmatrix[row][column];
+            x = x + 1;
+            y = y - 1;
+            //Piece position diagonally
+            int piecepositionreal = boardmatrix[x][y];
+            //Piece position x2 diagonally
+            int pieceposposition = boardmatrix[x + 1][y - 1];
+            if (piecepositionreal == 3 && pieceposposition == 1)
+            {
+                pieceoriginalposition = 1;
+                piecepositionreal = 1;
+                pieceposposition = 2;
+                break;
+            }
+            if (piecepositionreal == 1)
+            {
+                pieceoriginalposition = 1;
+                piecepositionreal = 2;
+                break;
+            }
+            if (piecepositionreal == 3 && pieceposposition == 3)
+            {
+                std::cout << "You can't move the piece to this position, please choose another one" << std::endl;
+                return MovePiece(row, column);
+            }
+            break;
+            //}
+        }
+        case '9':
+        {
+            //If(Queen){
+            //Move the piece diagonally right down
+            //Piece first position
+            int pieceoriginalposition = boardmatrix[row][column];
+            x = x + 1;
+            y = y + 1;
+            //Piece position diagonally
+            int piecepositionreal = boardmatrix[x][y];
+            //Piece position x2 diagonally
+            int pieceposposition = boardmatrix[x + 1][y + 1];
+            if (piecepositionreal == 3 && pieceposposition == 1)
+            {
+                pieceoriginalposition = 1;
+                piecepositionreal = 1;
+                pieceposposition = 2;
+                break;
+            }
+
+            //}
 
 
         }
+            return nullptr;
+
+
     }
-    return nullptr;
 }
 
-int ArduinoController::closeSerialPort()
-{
-    serialport->closeSerialPort();
-    return 0;
-}
-
+    int ArduinoController::closeSerialPort()
+    {
+        serialport->closeSerialPort();
+        return 0;
+    }
 
 

@@ -18,7 +18,8 @@ public://Arduino keypad functions
 
     bool Checkposition(int row, int column);//Check if the position is occupied
     int* MoveCursor(int x, int y);//Move the cursor to the position and press the button
-    int *MovePiece();//Move the piece to the position
+
+    int *MovePiece(int x, int y);//Move the piece to the position
     int closeSerialPort();//Close the serial port
 
     SerialPort *serialport;
