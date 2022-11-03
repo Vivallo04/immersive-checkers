@@ -6,15 +6,16 @@
 bool Queen = false;
 int keyscursor[4] = {'2', '6', '4', '8'};//Keypad keys for cursor movement
 int piecesmovement[4] = {'A', 'B', 'C', 'D'};//Keypad keys for piece movement
-bool occupied = false;//Check if the position is occupied
-int boardmatrix[8][8] =    {{0,0,0,0,0,0,0,0},
-                            {0,0,0,0,0,0,0,0},
-                            {0,0,0,0,0,0,0,0},
-                            {0,1,0,0,0,0,0,0},
-                            {0,0,0,0,0,0,0,0},
-                            {0,0,0,0,0,0,0,0},
-                            {0,0,0,0,0,0,0,0},
-                            {0,0,0,0,0,0,0,0}
+bool occupied_mypiece = false;//Check if the position is occupied_mypiece
+bool selected_piece = false;//Check if the piece is selected
+int boardmatrix[8][8] =    {{0,3,0,3,0,3,0,3},
+                            {3,0,3,0,3,0,3,0},
+                            {0,3,0,3,0,3,0,3},
+                            {1,0,1,0,1,0,1,0},
+                            {0,1,0,1,0,1,0,1},
+                            {2,0,2,0,2,0,2,0},
+                            {0,2,0,2,0,2,0,2},
+                            {2,0,2,0,2,0,2,0}
 };//Board matrix
 int rows_size = sizeof(boardmatrix)/sizeof(boardmatrix[0]);
 //get the numbers of columns
@@ -30,52 +31,81 @@ ArduinoController::ArduinoController()
 
 }
 
-int *ArduinoController::MoveCursor()
+
+bool ArduinoController::Checkposition(int row, int column)
+{
+    if (boardmatrix[row][column] == 2)
+    {
+        occupied_mypiece = true;
+    }
+    occupied_mypiece = false;
+}
+
+
+int *ArduinoController::MoveCursor(int x,int y)
 {
     ///Move the cursor to the position and press the button
     char movementtype;
-    //get the numbers of rows
+
 
     //Second we have to iterate the matrix made to synchronize the position of the cursor with the keypad input
-    for (int i = 0; i <rows_size ; ++i)
+    for (int i = x; i <rows_size ; ++i)
     {
-        for (int j = 0; j < columns_size; ++j)
+        for (int j = y; j < columns_size; ++j)
         {
             //Initialize where the cursor is going to be
-            int cursorposition[2] = {4,4};
+
+            int cursorpositionreal = boardmatrix[i][j];
             movementtype = serialport->getKeypadInput();
             //Make the cases based on the keypad input recursively
 
             switch (movementtype)
             {
-                case '6'://Move the cursor to the right
-                    cursorposition[1] = cursorposition[1] + 1;
-                    return MoveCursor();
-                case '4'://Move the cursor to the left
-                    cursorposition[1] = cursorposition[1] - 1;
-                    return MoveCursor();
-                case '2'://Move the cursor to the up
-                    cursorposition[0] = cursorposition[0] - 1;
-                    return MoveCursor();
-                case '8'://Move the cursor to the down
-                    cursorposition[0] = cursorposition[0] + 1;
-                    return MoveCursor();
-                case '5'://Press the button
-                    occupied = Checkposition();
-                    if (!occupied)
+                case '6':
+                {
+                    //Move the cursor to the right
+                    int j = j+1;
+                    cursorpositionreal = boardmatrix[i][j];
+                    return MoveCursor(i,j);
+                }
+                case '4':
+                {
+                    //Move the cursor to the left
+                    int j = j-1;
+                    cursorpositionreal = boardmatrix[i][j];
+                    return MoveCursor(i,j);
+                }
+                case '2':
+                {
+                    //Move the cursor to the up
+                    int i = i-1;
+                    cursorpositionreal = boardmatrix[i][j];
+                    return MoveCursor(i,j);
+                }
+                case '8':
+                {
+                    //Move the cursor to the down
+                    int i = i+1;
+                    cursorpositionreal = boardmatrix[i+1][j];
+                    return MoveCursor(i,j);
+                }
+                case '5':
+                {
+                    //Select the piece I want to move
+
+                    bool occupied = Checkposition(i, j);
+                    if (occupied)
                     {
-                        boardmatrix[cursorposition[0]][cursorposition[1]] = 1;
-                    }
-                    return MoveCursor();
-                case 'D'://Cancel the position chosen
-                    occupied = Checkposition();
-                    if (!occupied)
-                    {
-                        boardmatrix[cursorposition[0]][cursorposition[1]] = 0;
-                    }
-                    return MoveCursor();
-                    default:
+                       selected_piece = true;
                         break;
+                    }
+                    std::cout<<"The piece isn't occupied by your pieces, please choose another one"<<std::endl;
+                    selected_piece = false;
+
+                    return MoveCursor(i,j);
+                }
+                default:
+                break;
             }
 
 
@@ -85,22 +115,10 @@ int *ArduinoController::MoveCursor()
     return nullptr;
 }
 
-bool ArduinoController::Checkposition()
-{
-    for (int i = 0; i <rows_size ; ++i)
-    {
-        for (int j = 0; j < columns_size; ++j)
-        {
-            if (boardmatrix[i][j] == 1)
-            {
-                occupied = true;
-            }
-            occupied = false;
-        }
 
 
-    }
-}
+
+
 
 int *ArduinoController::MovePiece()
 {
@@ -139,15 +157,15 @@ int *ArduinoController::MovePiece()
                     return MovePiece();
                 }
                 case '5'://Press the button
-                    occupied = Checkposition();
-                    if (!occupied)
+                    //occupied_mypiece = Checkposition();
+                    if (!occupied_mypiece)
                     {
                         boardmatrix[cursorposition[0]][cursorposition[1]] = 1;
                     }
                     return MovePiece();
                 case 'D'://Cancel the position chosen
-                    occupied = Checkposition();
-                    if (!occupied)
+                    //occupied_mypiece = Checkposition();
+                    if (!occupied_mypiece)
                     {
                         boardmatrix[cursorposition[0]][cursorposition[1]] = 0;
                     }
@@ -167,4 +185,6 @@ int ArduinoController::closeSerialPort()
     serialport->closeSerialPort();
     return 0;
 }
+
+
 

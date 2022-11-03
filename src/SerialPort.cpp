@@ -33,37 +33,34 @@ SerialPort::~SerialPort()
 
 }
 
-char SerialPort::readSerialPort(char *buffer, unsigned int buf_size)//read data from serial port
-{
-    //Read data from serial port
-    int bytesRead = read(serialPort, buffer, buf_size);
-
-    return *buffer;
-}
-
-char SerialPort::writeSerialPort(char *buffer, unsigned int buf_size)
-{
-
-    //Write data to serial port
-    int bytesWritten = write(serialPort, buffer, buf_size);
-
-    return *buffer;
-}
-
 char SerialPort::getKeypadInput()
 {
-    char bufferkey[256];
-    char keypadCord = readSerialPort(bufferkey, sizeof(bufferkey));
+    //First we must read the first touch of the keypad
+    char buffer;
+    int bytesRead = read(serialPort, &buffer, 1);
+    char key_input = buffer;
+    int limit = 2;
+    //When we press the keypad we get a 0x0D, so we must read the next two bytes
+    for (int i = 0; i <2 ; ++i)
+    {
+        bytesRead = read(serialPort, &buffer, 1);
 
-    int counter = 0;
-    while (counter <2){//read the two first touches of the keypad
-        readSerialPort(bufferkey, sizeof(bufferkey));
-        counter ++;
     }
-    return keypadCord;
+    return key_input;
 
 }
-//
+
+char SerialPort::writeSerialPort(char buffer_received)
+{
+    //This method is going to be used for the LED ATTACHMENT
+    char buffer;
+    buffer = buffer_received;
+    //Write data to serial port
+    write(serialPort, &buffer, 1);
+
+    return buffer;
+}
+
 int SerialPort::closeSerialPort()
 {
     close(serialPort);

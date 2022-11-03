@@ -28,13 +28,12 @@ public:
     SerialPort(const char *portName);//constructor
     ~SerialPort();
     char getKeypadInput();//read the two first touches of the keypad
-    char readSerialPort(char *buffer, unsigned int buf_size);//read data from serial port
-    char writeSerialPort(char *buffer, unsigned int buf_size);//write data to serial port
+    char writeSerialPort(char buffer_received);//write data to serial port
     int closeSerialPort();//close serial port
 
 private:
     int serialPort;//declare serial port
-    bool connected;//check if the serial port is connected
+    bool connected = false;//check if the serial port is connected
 };
 
 
