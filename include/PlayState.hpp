@@ -16,7 +16,7 @@ public:
     int windowHeight = 720;
 
     // Logic
-    //float currentTime{};
+    float currentTime{};
     float prevTime = 0.0f;
     bool isGameOver = false;
 

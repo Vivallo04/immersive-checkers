@@ -98,10 +98,13 @@ void Board::HandleEvents()
                     highlightedTileX++;
                 }
             }
+            if (event.key.code == sf::Keyboard::Enter)
+            {
+                HighlightPiece(highlightedTileX, highlightedTileY);
+            }
         }
     }
     HighlightTile(highlightedTileX, highlightedTileY);
-
 }
 
 // returns a matrix with zeros
@@ -203,6 +206,7 @@ void Board::HighlightTile(int x, int y)
     gameWindow -> draw(rect);
 }
 
+
 void Board::MoveHighlightWithArrowKeys()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -240,4 +244,167 @@ void Board::MoveHighlightWithArrowKeys()
     HighlightTile(highlightedTileX, highlightedTileY);
 }
 
+void Board::GetCurrentTilePosition(int x, int y)
+{
+    BOOST_LOG_TRIVIAL(info) << "Current position: " << board[x][y];
 
+
+}
+
+void Board::MovePiece(int x, int y)
+{
+    if (this -> board[x][y] == 1)
+    {
+        this -> board[x][y] = 0;
+        this -> board[x-1][y-1] = 1;
+        this -> board[x+1][y-1] = 1;
+    }
+    if (this -> board[x][y] == 2)
+    {
+        this -> board[x][y] = 0;
+        this -> board[x-1][y+1] = 2;
+        this -> board[x+1][y+1] = 2;
+    }
+}
+
+void Board::CheckForJump()
+{
+    for (int i = 0; i < boardSize; i++)
+    {
+        for (int j = 0; j < boardSize; j++)
+        {
+            if (this->board[i][j] == 1)
+            {
+                if (this->board[i - 1][j - 1] == 2 && this->board[i - 2][j - 2] == 0)
+                {
+                    this->board[i - 1][j - 1] = 0;
+                }
+                if (this->board[i + 1][j - 1] == 2 && this->board[i + 2][j - 2] == 0)
+                {
+                    this->board[i + 1][j - 1] = 0;
+                }
+            }
+            if (this->board[i][j] == 2)
+            {
+                if (this->board[i - 1][j + 1] == 1 && this->board[i - 2][j + 2] == 0)
+                {
+                    this->board[i - 1][j + 1] = 0;
+                }
+                if (this->board[i + 1][j + 1] == 1 && this->board[i + 2][j + 2] == 0)
+                {
+                    this->board[i + 1][j + 1] = 0;
+                }
+            }
+        }
+    }
+}
+
+
+void Board::HighlightMoveableTiles()
+{
+    for (int i = 0; i < boardSize; i++)
+    {
+        for (int j = 0; j < boardSize; j++)
+        {
+            if (this->board[i][j] == 1)
+            {
+                if (this->board[i - 1][j - 1] == 0)
+                {
+                    sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
+                    rect.setFillColor(sf::Color(0, 0, 0, 0));
+                    rect.setOutlineThickness(4.0f);
+                    rect.setPosition(boardPositionX + ((i - 1) * tileSize), boardPositionY + ((j - 1) * tileSize));
+                    gameWindow->draw(rect);
+                }
+                if (this->board[i + 1][j - 1] == 0)
+                {
+                    sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
+                    rect.setFillColor(sf::Color(0, 0, 0, 0));
+                    rect.setOutlineThickness(4.0f);
+                    rect.setPosition(boardPositionX + ((i + 1) * tileSize), boardPositionY + ((j - 1) * tileSize));
+                    gameWindow->draw(rect);
+                }
+            }
+            if (this->board[i][j] == 2)
+            {
+                if (this->board[i - 1][j + 1] == 0)
+                {
+                    sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
+                    rect.setFillColor(sf::Color(0, 0, 0, 0));
+                    rect.setOutlineThickness(4.0f);
+                    rect.setPosition(boardPositionX + ((i - 1) * tileSize), boardPositionY + ((j + 1) * tileSize));
+                    gameWindow->draw(rect);
+                }
+                if (this->board[i + 1][j + 1] == 0)
+                {
+                    sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
+                    rect.setFillColor(sf::Color(0, 0, 0, 0));
+                    rect.setOutlineThickness(4.0f);
+                    rect.setPosition(boardPositionX + ((i + 1) * tileSize), boardPositionY + ((j + 1) * tileSize));
+                    gameWindow->draw(rect);
+                }
+            }
+        }
+    }
+}
+
+void Board::HighlightPiece(int x, int y)
+{
+    BOOST_LOG_TRIVIAL(info) << "Highlighting piece at: " << x << "," << y;
+    sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
+    rect.setFillColor(sf::Color(0, 255, 0, 0));
+    rect.setOutlineThickness(4.0f);
+    rect.setPosition(boardPositionX + (x * tileSize), boardPositionY + (y * tileSize));
+    gameWindow->draw(rect);
+}
+
+void Board::MoveHighlightedPiece(int x, int y)
+{
+    if (this->board[x][y] == 1)
+    {
+        this->board[x][y] = 0;
+        this->board[x - 1][y - 1] = 1;
+        this->board[x + 1][y - 1] = 1;
+    }
+}
+
+void Board::HighlightJumpableTiles(int x, int y)
+{
+    if (this->board[x][y] == 1)
+    {
+        if (this->board[x - 1][y - 1] == 2 && this->board[x - 2][y - 2] == 0)
+        {
+            sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
+            rect.setFillColor(sf::Color(0, 0, 0, 0));
+            rect.setOutlineThickness(4.0f);
+            rect.setPosition(boardPositionX + ((x - 2) * tileSize), boardPositionY + ((y - 2) * tileSize));
+            gameWindow->draw(rect);
+        }
+        if (this->board[x + 1][y - 1] == 2 && this->board[x + 2][y - 2] == 0)
+        {
+            sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
+            rect.setFillColor(sf::Color(0, 0, 0, 0));
+            rect.setOutlineThickness(4.0f);
+            rect.setPosition(boardPositionX + ((x + 2) * tileSize), boardPositionY + ((y - 2) * tileSize));
+            gameWindow->draw(rect);
+        }
+    }
+    if (this->board[x][y] == 2)
+    {
+        if (this->board[x - 1][y + 1] == 1 && this->board[x - 2][y + 2] == 0)
+        {
+            sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
+            rect.setFillColor(sf::Color(0, 0, 0, 0));
+            rect.setOutlineThickness(4.0f);
+            rect.setPosition(boardPositionX + ((x - 2) * tileSize), boardPositionY + ((y + 2) * tileSize));
+            gameWindow->draw(rect);
+        }
+        if (this->board[x + 1][y + 1] == 1 && this->board[x + 2][y + 2] == 0)
+        {
+            sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
+            rect.setFillColor(sf::Color(0, 0, 0, 0));
+            rect.setOutlineThickness(4.0f);
+            rect.setPosition(boardPositionX + ((x + 2) * tileSize), boardPositionY + ((y + 2) * tileSize));
+        }
+    }
+}
