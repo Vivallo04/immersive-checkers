@@ -35,6 +35,11 @@ int main()
                 sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
                 game -> window.setView(sf::View(visibleArea));
             }
+            if (event.type == sf::Event::KeyPressed)
+            {
+
+
+            }
         }
 
         if (!game -> isGameOver)

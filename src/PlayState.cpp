@@ -6,6 +6,7 @@ PlayState::PlayState(): window(sf::VideoMode(windowWidth, windowHeight, 32), "Im
 {
     Init();
     window.setVerticalSyncEnabled(true);
+    window.setKeyRepeatEnabled(false);
 }
 
 void PlayState::Init()
@@ -35,7 +36,7 @@ void PlayState::Init()
 
     // play music
     bgMusic.setLoop(true);
-    bgMusic.play();
+    //bgMusic.play();
 }
 
 void PlayState::Update(float delta)
@@ -56,12 +57,14 @@ void PlayState::SetView()
 void PlayState::Draw(float delta)
 {
     this -> SetView();
-
     backgroundSprite.setTexture(backgroundTexture);
     backgroundSprite.setTextureRect({200, 200, 1280, 720});
     window.draw(backgroundSprite);
     //DrawBackground(delta);
     board -> Init();
+    board -> RenderPieces();
+    board -> HandleEvents();
+
 }
 
 void PlayState::DrawBackground(float delta)
