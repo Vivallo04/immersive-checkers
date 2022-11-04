@@ -2,11 +2,14 @@
 #include "../src/util.hpp"
 #include <SFML/Graphics.hpp>
 
-PlayState::PlayState() : window(sf::VideoMode(windowWidth, windowHeight, 32), "Immersive Checkers")
+PlayState::PlayState(Piece *whitePieces, Piece *redPieces)
 {
+    for (int i = 0;i < 12;i++)
+    {
+        whitePieces[i].color = sf::Color::White;
+        redPieces[i].color = sf::Color::Red;
+    }
     Init();
-    window.setVerticalSyncEnabled(true);
-    window.setKeyRepeatEnabled(false);
 }
 
 void PlayState::Init()
@@ -36,7 +39,7 @@ void PlayState::Init()
 
     // play music
     bgMusic.setLoop(true);
-    //bgMusic.play();
+    bgMusic.play();
 }
 
 void PlayState::Update(float delta)
@@ -50,37 +53,29 @@ void PlayState::SetView()
     sf::View view(sf::FloatRect(0, 0, viewSize.x, viewSize.y));
 
     view.zoom(1.0f);
-    window.setView(view);
 }
 
-void PlayState::Setup(Piece *redPieces, Piece *whitePiece)
+void PlayState::Setup(Piece *redPieces, Piece *whitePieces)
 {
     int m = 0;
-    for (int i = 0; i < 3; i++)
-    {
-        for (int j = (int) !(i % 2 & 1); j < 8; j += 2)
-        {
-            //redPieces[m].SetPosition(j * 60 + 1280/5, i * 60 + 720/16);
-            redPieces->isAlive = true;
-            redPieces->x = j;
-            redPieces->y = 7 - 1;
+    for (int i = 0; i < 3; i++) {
+        for (int j = (int)!(i%2 & 1);j < 8;j += 2) {
+            whitePieces[m].isAlive = true;
+            whitePieces[m].x = j;
+            whitePieces[m].y = i;
+            m++;
+        }
+
+    }
+    m = 0;
+    for (int i = 0; i < 3; i++) {
+        for (int j = (int)(i % 2 & 1);j < 8;j += 2) {
+            redPieces[m].isAlive = true;
+            redPieces[m].x = j;
+            redPieces[m].y = 7-i;
             m++;
         }
     }
-
-}
-
-void PlayState::Draw(float delta)
-{
-    this->SetView();
-    backgroundSprite.setTexture(backgroundTexture);
-    backgroundSprite.setTextureRect({200, 200, 1280, 720});
-    window.draw(backgroundSprite);
-    //DrawBackground(delta);
-    board->Init();
-    board->RenderPieces();
-    board->HandleEvents();
-
 }
 
 void PlayState::DrawBackground(float delta)
@@ -155,7 +150,7 @@ int PlayState::MovePiece(int x, int y, Piece *isPiece, Piece *redPieces, Piece *
     if (x == isPiece->x - 2 && y == isPiece->y - 2)
     {
         if (!FindPiece(x, y, redPieces, whitePieces) &&
-            FindPiece(x + 1, y + 1, redPieces, whitePieces) != NULL &&
+            FindPiece(x + 1, y + 1, redPieces, whitePieces) != nullptr &&
             FindPiece(x + 1, y + 1, redPieces, whitePieces)->color != isPiece->color)
         {
             *turn = ((*turn == 1) ? 2 : 1);
@@ -169,7 +164,7 @@ int PlayState::MovePiece(int x, int y, Piece *isPiece, Piece *redPieces, Piece *
     if (x == isPiece->x + 2 && y == isPiece->y - 2)
     {
         if (!FindPiece(x, y, redPieces, whitePieces) &&
-            FindPiece(x - 1, y + 1, redPieces, whitePieces) != NULL &&
+            FindPiece(x - 1, y + 1, redPieces, whitePieces) != nullptr &&
             FindPiece(x - 1, y + 1, redPieces, whitePieces)->color != isPiece->color)
         {
             *turn = ((*turn == 1) ? 2 : 1);
@@ -235,52 +230,59 @@ int PlayState::MovePiece(int x, int y, Piece *isPiece, Piece *redPieces, Piece *
     return 0;
 }
 
-void PlayState::Play()
+int PlayState::CalculateMove(int x, int y, Piece* isPiece, Piece* redPieces, Piece* whitePieces, int *turn)
 {
-    if (selectedPiece != NULL)
+    if (isPiece->color == sf::Color::Red || isPiece->color == sf::Color::White && isPiece->isKing)
     {
-        //board.Highlight(window, selectedPiece->x, selectedPiece->y);
-    }
-
-    for (int i = 0; i < 12; i++)
-    {
-        whitePieces[i].Draw(this -> window);
-        redPieces[i].Draw(this->window);
-    }
-
-    if (selected)
-    {
-        int x = sf::Mouse::getPosition(window).x / 75;
-        int y = sf::Mouse::getPosition(window).y / 75;
-        if (FindPiece(x, y, redPieces, whitePieces) &&
-            (FindPiece(x, y, redPieces, whitePieces)->color == sf::Color::Red && turn == 1 ||
-             FindPiece(x, y, redPieces, whitePieces)->color == sf::Color::White && turn == 2))
+        if (x == isPiece->x - 1 && y == isPiece->y - 1)
         {
-            if (FindPiece(x, y, redPieces, whitePieces) == selectedPiece)
+            if (!FindPiece(x, y, redPieces, whitePieces))
             {
-                selectedPiece = NULL;
-            } else
-            {
-                selectedPiece = FindPiece(x, y, redPieces, whitePieces);
+                return 1;
             }
-
-            selected = false;
-        } else if (selectedPiece != NULL && MovePiece(x, y, selectedPiece, redPieces, whitePieces, &turn))
-        {
-            selected = false;
-            selectedPiece = NULL;
         }
-        selected = false;
+        if (x == isPiece->x + 1 && y == isPiece->y - 1)
+        {
+            if (!FindPiece(x, y, redPieces, whitePieces))
+            {
+                return 1;
+            }
+        }
+        if (x == isPiece->x - 2 && y == isPiece->y - 2)
+        {
+            if (!FindPiece(x, y, redPieces, whitePieces) &&
+                FindPiece(x + 1, y + 1, redPieces, whitePieces) != NULL &&
+                FindPiece(x + 1, y + 1, redPieces, whitePieces)->color != isPiece->color)
+            {
+                return 1;
+            }
+        }
+        if (x == isPiece->x + 2 && y == isPiece->y - 2)
+        {
+            if (!FindPiece(x, y, redPieces, whitePieces) &&
+                FindPiece(x - 1, y + 1, redPieces, whitePieces) != NULL &&
+                FindPiece(x - 1, y + 1, redPieces, whitePieces)->color != isPiece->color)
+            {
+                return 1;
+            }
+        }
     }
-    for (int i = 0; i < 12; i++)
+    if (isPiece->color == sf::Color::White || isPiece->color == sf::Color::Red && isPiece->isKing)
     {
-        if (redPieces[i].y == 0)
+        if (x == isPiece->x - 1 && y == isPiece->y + 1)
         {
-            redPieces[i].isKing = true;
+            if (!FindPiece(x, y, redPieces, whitePieces))
+            {
+                return 1;
+            }
         }
-        if (whitePieces[i].y == 7)
+        if (x == isPiece->x + 1 && y == isPiece->y + 1)
         {
-            whitePieces[i].isKing = true;
+            if (!FindPiece(x, y, redPieces, whitePieces))
+            {
+                return 1;
+            }
         }
     }
 }
+

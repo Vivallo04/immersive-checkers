@@ -1,7 +1,10 @@
 #include <SFML/Graphics.hpp>
-#include "include/PlayState.hpp"
 #include <boost/log/trivial.hpp>
+#include "include/Piece.hpp"
+#include "include/PlayState.hpp"
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "DanglingPointer"
 
 /**
  * @brief Main entry point of the PlayState
@@ -10,56 +13,76 @@
 int main()
 {
     BOOST_LOG_TRIVIAL(info) << "Starting PlayState";
-    // SFML Logic
     sf::ContextSettings settings;
+    //settings.antialiasingLevel = 16.0;
+    sf::RenderWindow window(sf::VideoMode(600, 600), "Immersive Checkers", sf::Style::Default, settings);
     sf::Event event{};
-    sf::Clock clock;
 
-    // PlayState
-    auto* game = new PlayState();
-    settings.antialiasingLevel = 16.0;
+    Piece redPieces[12];
+    Piece whitePieces[12];
 
-    BOOST_LOG_TRIVIAL(info) << "The PlayState is being drawn";
-    while (true)
-    {
-        sf::Time delta = clock.restart();
-        while (game -> window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                game -> window.close();
+    auto* game = new PlayState(whitePieces, redPieces);
+    game -> Setup(redPieces, whitePieces);
+
+    BOOST_LOG_TRIVIAL(info) << "The PlayState was setup";
+
+    while (window.isOpen()) {
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
                 delete game;
-                return EXIT_SUCCESS;
+                window.close();
             }
-            if (event.type == sf::Event::Resized)
-            {
-                // Update the view to the new size of the window
-                sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
-                game -> window.setView(sf::View(visibleArea));
-            }
-            if (event.type == sf::Event::KeyPressed)
-            {
-                if (event.key.code == sf::Keyboard::Escape)
-                {
-                    game -> window.close();
-                    delete game;
-                    return EXIT_SUCCESS;
+
+            if (event.type == sf::Event::MouseButtonReleased) {
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    game -> selected = !game -> selected;
                 }
-            }
-            if (game -> isGameOver)
-            {
-                game -> window.close();
-                delete game;
-                return EXIT_SUCCESS;
             }
         }
 
-        if (!game -> isGameOver)
-            game -> Update(delta.asSeconds());
+        window.clear();
+        game -> board.Draw(window);
 
-        game -> window.clear(sf::Color(255, 255, 255, 255));
+        if (game -> selectedPiece != nullptr) {
+            game -> board.Highlight(window, game ->  selectedPiece->x, game -> selectedPiece->y);
+        }
 
-        game -> Draw(delta.asSeconds());
-        game -> window.display();
+        for (int i = 0;i < 12;i++) {
+            whitePieces[i].Draw(window);
+            redPieces[i].Draw(window);
+        }
+
+        if (game -> selected) {
+            int x = sf::Mouse::getPosition(window).x / 75;
+            int y = sf::Mouse::getPosition(window).y / 75;
+            if (game ->  FindPiece(x, y, redPieces, whitePieces) &&
+                (game -> FindPiece(x, y, redPieces, whitePieces)->color == sf::Color::Red && game ->  turn == 1 ||
+                 game ->  FindPiece(x, y, redPieces, whitePieces)->color == sf::Color::White && game ->  turn == 2)) {
+                if (game ->  FindPiece(x, y, redPieces, whitePieces) == game -> selectedPiece) {
+                    game -> selectedPiece = nullptr;
+                }
+                else {
+                    game ->  selectedPiece = game ->  FindPiece(x, y, redPieces, whitePieces);
+                }
+                game ->  selected = false;
+            }
+            else if (game ->  selectedPiece != nullptr && game ->  MovePiece(x, y, game ->  selectedPiece, redPieces, whitePieces, & game ->  turn)) {
+                game ->  selected = false;
+                game ->  selectedPiece = nullptr;
+            }
+            game ->  selected = false;
+        }
+        for (int i = 0;i < 12;i++) {
+            if (redPieces[i].y == 0)
+            { redPieces[i].isKing = true;
+            }
+            if (whitePieces[i].y == 7) {
+                whitePieces[i].isKing = true;
+            }
+        }
+        window.display();
     }
+    return 0;
 }
+
+#pragma clang diagnostic pop

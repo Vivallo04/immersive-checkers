@@ -7,45 +7,24 @@
 class Board
 {
 public:
-    Board(sf::RenderWindow &gameWindow);
     ~Board();
 
-    void Init();
-    void Update();
     void HandleEvents();
-    int **PopulateBoard();
-    int **SetBoard();
-    void RenderPieces();
-    void InitBoard();
-    void HighlightTile(int x, int y);
+    void Draw(sf::RenderWindow& window);
+    void Highlight(sf::RenderWindow& window, int x, int y) const;
+    void HighlightWithRectangle(int x, int y);
     [[maybe_unused]] void MoveHighlightWithArrowKeys();
-    void GetCurrentTilePosition(int x, int y);
-    void MovePiece(int x, int y);
-    void CheckForJump();
-    void CheckForWin();
-    void HighlightPiece(int x, int y);
-    void HighlightMoveableTiles(int x, int y);
-    void HighlightMoveableTiles();
-    void MoveHighlightedPiece(int x, int y);
+    [[maybe_unused]] void CheckForJump();
+    [[maybe_unused]] void CheckForWin();
     void HighlightJumpableTiles(int x, int y);
 
-
-
 private:
-    sf::RenderWindow *gameWindow;
-    int boardPositionX = 1280/5;
-    int boardPositionY = 720/16;
-    int tileSize = 60;
-    int boardSize = 8;
-    int grid[8][8] = {0};
-
-    bool isTileHighlighted = false;
+    sf::RenderWindow *gameWindow{};
+    int size = 8;
+    int tileSize = 75;
     int highlightedTileX = 0;
     int highlightedTileY = 0;
-    int** board = new int*[boardSize];
-
-
-    void Draw();
+    int** board = new int*[size];
 };
 
 

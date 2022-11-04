@@ -4,62 +4,36 @@
 #include <boost/timer/timer.hpp>
 
 
-Board::Board(sf::RenderWindow &gameWindow)
-{
-    BOOST_LOG_TRIVIAL(info) << "Board constructor called";
-    this -> gameWindow = &gameWindow;
-    this -> gameWindow->setKeyRepeatEnabled(false);
-    this -> InitBoard();
-    this -> HighlightTile(0, 0);
-}
-
 Board::~Board()
 {
-
+    delete[] this -> board;
 }
 
-void Board::Init()
+void Board::Draw(sf::RenderWindow& window)
 {
-    this -> Draw();
-}
-
-void Board::Draw()
-{
-    for (int i = 0; i < boardSize; i++)
+    sf::RectangleShape tile;
+    tile.setSize(sf::Vector2f((float)tileSize, (float)tileSize));
+    for (int i = 0;i < size;i++)
     {
-        for (int j = 0; j < boardSize; j++)
+        for (int j = 0;j < size;j++)
         {
+            tile.setPosition(sf::Vector2f((float)tileSize * i, (float)tileSize * j));
             if ((i + j) % 2 == 0)
             {
-                sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
-                rect.setPosition(boardPositionX + (i * tileSize), boardPositionY + (j * tileSize));
-                rect.setFillColor(sf::Color(255, 207, 159, 255));
-                gameWindow -> draw(rect);
-            } else
-            {
-                sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
-                rect.setPosition(boardPositionX + (i * tileSize), boardPositionY + (j * tileSize));
-                rect.setFillColor(sf::Color(209, 139, 71, 255));
-                gameWindow -> draw(rect);
+                tile.setFillColor(sf::Color(255, 207, 159, 255));
             }
+            else
+            {
+                tile.setFillColor(sf::Color(209, 139, 71, 255));
+            }
+            window.draw(tile);
         }
     }
 }
 
-void Board::InitBoard()
-{
-    SetBoard();
-    PopulateBoard();
-}
-
-void Board::Update()
-{
-    //Draw();
-}
-
 void Board::HandleEvents()
 {
-    sf::Event event;
+    sf::Event event{};
     while (gameWindow -> pollEvent(event))
     {
         if (event.type == sf::Event::Closed)
@@ -98,109 +72,19 @@ void Board::HandleEvents()
             }
             if (event.key.code == sf::Keyboard::Enter)
             {
-                HighlightPiece(highlightedTileX, highlightedTileY);
+                HighlightWithRectangle(highlightedTileX, highlightedTileY);
             }
         }
     }
-    HighlightTile(highlightedTileX, highlightedTileY);
+    HighlightWithRectangle(highlightedTileX, highlightedTileY);
 }
 
-// returns a matrix with zeros
-int** Board::SetBoard()
+void Board::HighlightWithRectangle(int x, int y)
 {
-    for (int i = 0; i < boardSize; i++)
-    {
-        this -> board[i] = new int[boardSize];
-        for (int j = 0; j < boardSize; j++)
-        {
-            this -> board[i][j] = 0;
-        }
-    }
-
-    BOOST_LOG_TRIVIAL(debug) << "Board initialized";
-    return this -> board;
-}
-
-// populates the board with checkers
-int **Board::PopulateBoard()
-{
-    for (int i = 0; i < boardSize; i++)
-    {
-        for (int j = 0; j < boardSize; j++)
-        {
-            if (i % 2 == 0)
-            {
-                if (j % 2 == 0)
-                {
-                    this -> board[i][j] = 0;
-                } else
-                {
-                    if (j < 3)
-                    {
-                        this -> board[i][j] = 1;
-                    } else if (j > 4)
-                    {
-                        this -> board[i][j] = 2;
-                    } else
-                    {
-                        this -> board[i][j] = 0;
-                    }
-                }
-            } else
-            {
-                if (j % 2 == 0)
-                {
-                    if (j < 3)
-                    {
-                        this -> board[i][j] = 1;
-                    } else if (j > 4)
-                    {
-                        this -> board[i][j] = 2;
-                    } else
-                    {
-                        this -> board[i][j] = 0;
-                    }
-                } else
-                {
-                    this -> board[i][j] = 0;
-                }
-            }
-        }
-    }
-    BOOST_LOG_TRIVIAL(debug) << "Board populated";
-    return this -> board;
-}
-
-void Board::RenderPieces()
-{
-    for (int i = 0; i < boardSize; i++)
-    {
-        for (int j = 0; j < boardSize; j++)
-        {
-            if (this -> board[i][j] == 1)
-            {
-                sf::CircleShape circle(tileSize/2);
-                circle.setFillColor(sf::Color(255, 0, 0, 255));
-                circle.setPosition(boardPositionX + (i * tileSize), boardPositionY + (j * tileSize));
-                gameWindow -> draw(circle);
-            }
-            if (this -> board[i][j] == 2)
-            {
-                sf::CircleShape circle(tileSize/2);
-                circle.setFillColor(sf::Color(255, 255, 255, 255));
-                circle.setPosition(boardPositionX + (i * tileSize), boardPositionY + (j * tileSize));
-                gameWindow -> draw(circle);
-            }
-        }
-    }
-}
-
-void Board::HighlightTile(int x, int y)
-{
-    sf::RectangleShape tile(sf::Vector2f(tileSize, tileSize));
+    sf::RectangleShape tile(sf::Vector2f((float)tileSize, (float)tileSize));
     tile.setFillColor(sf::Color(0, 0, 0, 0));
     tile.setOutlineThickness(4.0f);
-    tile.setPosition(boardPositionX + (x * tileSize), boardPositionY + (y * tileSize));
+    tile.setPosition((float)(x * tileSize), (float)(y * tileSize));
     gameWindow -> draw(tile);
 }
 
@@ -238,35 +122,14 @@ void Board::HighlightTile(int x, int y)
             BOOST_LOG_TRIVIAL(info) << "Current position: " << board[highlightedTileX][highlightedTileY];
         }
     }
-    HighlightTile(highlightedTileX, highlightedTileY);
+    HighlightWithRectangle(highlightedTileX, highlightedTileY);
 }
 
-void Board::GetCurrentTilePosition(int x, int y)
+[[maybe_unused]] void Board::CheckForJump()
 {
-    BOOST_LOG_TRIVIAL(info) << "Current position: " << board[x][y];
-}
-
-void Board::MovePiece(int x, int y)
-{
-    if (this -> board[x][y] == 1)
+    for (int i = 0; i < size; i++)
     {
-        this -> board[x][y] = 0;
-        this -> board[x-1][y-1] = 1;
-        this -> board[x+1][y-1] = 1;
-    }
-    if (this -> board[x][y] == 2)
-    {
-        this -> board[x][y] = 0;
-        this -> board[x-1][y+1] = 2;
-        this -> board[x+1][y+1] = 2;
-    }
-}
-
-void Board::CheckForJump()
-{
-    for (int i = 0; i < boardSize; i++)
-    {
-        for (int j = 0; j < boardSize; j++)
+        for (int j = 0; j < size; j++)
         {
             if (this->board[i][j] == 1)
             {
@@ -293,80 +156,7 @@ void Board::CheckForJump()
         }
     }
 }
-
-
-void Board::HighlightMoveableTiles()
-{
-    for (int i = 0; i < boardSize; i++)
-    {
-        for (int j = 0; j < boardSize; j++)
-        {
-            if (this->board[i][j] == 1)
-            {
-                if (this->board[i - 1][j - 1] == 0)
-                {
-                    sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
-                    rect.setFillColor(sf::Color(0, 0, 0, 0));
-                    rect.setOutlineThickness(4.0f);
-                    rect.setPosition(boardPositionX + ((i - 1) * tileSize), boardPositionY + ((j - 1) * tileSize));
-                    gameWindow->draw(rect);
-                }
-                if (this->board[i + 1][j - 1] == 0)
-                {
-                    sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
-                    rect.setFillColor(sf::Color(0, 0, 0, 0));
-                    rect.setOutlineThickness(4.0f);
-                    rect.setPosition(boardPositionX + ((i + 1) * tileSize), boardPositionY + ((j - 1) * tileSize));
-                    gameWindow->draw(rect);
-                }
-            }
-            if (this->board[i][j] == 2)
-            {
-                if (this->board[i - 1][j + 1] == 0)
-                {
-                    sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
-                    rect.setFillColor(sf::Color(0, 0, 0, 0));
-                    rect.setOutlineThickness(4.0f);
-                    rect.setPosition(boardPositionX + ((i - 1) * tileSize), boardPositionY + ((j + 1) * tileSize));
-                    gameWindow->draw(rect);
-                }
-                if (this->board[i + 1][j + 1] == 0)
-                {
-                    sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
-                    rect.setFillColor(sf::Color(0, 0, 0, 0));
-                    rect.setOutlineThickness(4.0f);
-                    rect.setPosition(boardPositionX + ((i + 1) * tileSize), boardPositionY + ((j + 1) * tileSize));
-                    gameWindow->draw(rect);
-                }
-            }
-        }
-    }
-}
-
-void Board::HighlightPiece(int x, int y)
-{
-    BOOST_LOG_TRIVIAL(info) << "Highlighting piece at: " << x << "," << y;
-    sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
-    rect.setFillColor(sf::Color(0, 255, 0, 0));
-    rect.setOutlineThickness(4.0f);
-    rect.setPosition(boardPositionX + (x * tileSize), boardPositionY + (y * tileSize));
-    gameWindow->draw(rect);
-}
-
-void Board::MoveHighlightedPiece(int x, int y)
-{
-    if (this->board[x][y] == 1)
-    {
-
-
-
-
-        this->board[x][y] = 0;
-        this->board[x - 1][y - 1] = 1;
-        this->board[x + 1][y - 1] = 1;
-    }
-}
-
+/*
 void Board::HighlightJumpableTiles(int x, int y)
 {
     if (this->board[x][y] == 1)
@@ -408,7 +198,7 @@ void Board::HighlightJumpableTiles(int x, int y)
     }
 }
 
-void Board::CheckForWin()
+[[maybe_unused]] void Board::CheckForWin()
 {
     int player1Count = 0;
     int player2Count = 0;
@@ -436,4 +226,13 @@ void Board::CheckForWin()
         BOOST_LOG_TRIVIAL(info) << "Player 1 wins!";
         gameWindow->close();
     }
+}*/
+
+void Board::Highlight(sf::RenderWindow& window, int x, int y) const
+{
+    sf::RectangleShape tile;
+    tile.setSize(sf::Vector2f((float) tileSize, (float)tileSize));
+    tile.setFillColor(sf::Color::Green);
+    tile.setPosition(sf::Vector2f((float) tileSize * (float)x, (float)tileSize * (float)y));
+    window.draw(tile);
 }
