@@ -2,7 +2,7 @@
 #define IMMERSIVE_CHECKERS_COMPUTERAI_HPP
 
 
-#include "../include/Board.hpp"
+#include "Board.hpp"
 
 class ComputerAI
 {
