@@ -262,7 +262,7 @@ void Board::MovePiece(int x, int y)
     }
 }
 
-void Board::CheckForJump()
+[[maybe_unused]] void Board::CheckForJump()
 {
     for (int i = 0; i < boardSize; i++)
     {
@@ -357,10 +357,6 @@ void Board::MoveHighlightedPiece(int x, int y)
 {
     if (this->board[x][y] == 1)
     {
-
-
-
-
         this->board[x][y] = 0;
         this->board[x - 1][y - 1] = 1;
         this->board[x + 1][y - 1] = 1;
@@ -408,7 +404,7 @@ void Board::HighlightJumpableTiles(int x, int y)
     }
 }
 
-void Board::CheckForWin()
+[[maybe_unused]] void Board::CheckForWin()
 {
     int player1Count = 0;
     int player2Count = 0;

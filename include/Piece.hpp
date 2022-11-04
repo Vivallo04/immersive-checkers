@@ -7,6 +7,7 @@ class Piece
 public:
     float radius = 30;
     int x, y;
+    int size = 75;
     bool isAlive;
     bool isKing;
     sf::Color color;

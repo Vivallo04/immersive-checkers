@@ -237,6 +237,7 @@ int PlayState::MovePiece(int x, int y, Piece *isPiece, Piece *redPieces, Piece *
 
 void PlayState::Play()
 {
+    int pieceSize = 75;
     if (selectedPiece != nullptr)
     {
         //board.Highlight(window, selectedPiece->x, selectedPiece->y);
@@ -250,8 +251,8 @@ void PlayState::Play()
 
     if (selected)
     {
-        int x = sf::Mouse::getPosition(window).x / 75;
-        int y = sf::Mouse::getPosition(window).y / 75;
+        int x = sf::Mouse::getPosition(window).x / pieceSize;
+        int y = sf::Mouse::getPosition(window).y / pieceSize;
         if (FindPiece(x, y, redPieces, whitePieces) &&
             (FindPiece(x, y, redPieces, whitePieces)->color == sf::Color::Red && turn == 1 ||
              FindPiece(x, y, redPieces, whitePieces)->color == sf::Color::White && turn == 2))

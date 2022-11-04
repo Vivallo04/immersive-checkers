@@ -21,13 +21,14 @@ public:
     [[maybe_unused]] void MoveHighlightWithArrowKeys();
     void GetCurrentTilePosition(int x, int y);
     void MovePiece(int x, int y);
-    void CheckForJump();
-    void CheckForWin();
+    [[maybe_unused]] void CheckForJump();
+    [[maybe_unused]] void CheckForWin();
     void HighlightPiece(int x, int y);
     void HighlightMoveableTiles(int x, int y);
     void HighlightMoveableTiles();
     void MoveHighlightedPiece(int x, int y);
     void HighlightJumpableTiles(int x, int y);
+    void Draw2();
 
 
 
