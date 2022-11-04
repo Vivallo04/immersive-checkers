@@ -31,61 +31,22 @@ void Board::Draw(sf::RenderWindow& window)
     }
 }
 
-void Board::HandleEvents()
+void Board::HighlightGreen(sf::RenderWindow& window, int x, int y) const
 {
-    sf::Event event{};
-    while (gameWindow -> pollEvent(event))
-    {
-        if (event.type == sf::Event::Closed)
-        {
-            gameWindow -> close();
-        }
-        if (event.type == sf::Event::KeyPressed)
-        {
-            if (event.key.code == sf::Keyboard::Up)
-            {
-                if (highlightedTileY > 0)
-                {
-                    highlightedTileY--;
-                }
-            }
-            if (event.key.code == sf::Keyboard::Down)
-            {
-                if (highlightedTileY < 7)
-                {
-                    highlightedTileY++;
-                }
-            }
-            if (event.key.code == sf::Keyboard::Left)
-            {
-                if (highlightedTileX > 0)
-                {
-                    highlightedTileX--;
-                }
-            }
-            if (event.key.code == sf::Keyboard::Right)
-            {
-                if (highlightedTileX < 7)
-                {
-                    highlightedTileX++;
-                }
-            }
-            if (event.key.code == sf::Keyboard::Enter)
-            {
-                HighlightWithRectangle(highlightedTileX, highlightedTileY);
-            }
-        }
-    }
-    HighlightWithRectangle(highlightedTileX, highlightedTileY);
+    sf::RectangleShape tile;
+    tile.setSize(sf::Vector2f((float) tileSize, (float)tileSize));
+    tile.setFillColor(sf::Color::Green);
+    tile.setPosition(sf::Vector2f((float) tileSize * (float)x, (float)tileSize * (float)y));
+    window.draw(tile);
 }
 
-void Board::HighlightWithRectangle(int x, int y)
+void Board::HighlightWithRectangle(sf::RenderWindow& window, int x, int y) const
 {
     sf::RectangleShape tile(sf::Vector2f((float)tileSize, (float)tileSize));
     tile.setFillColor(sf::Color(0, 0, 0, 0));
     tile.setOutlineThickness(4.0f);
     tile.setPosition((float)(x * tileSize), (float)(y * tileSize));
-    gameWindow -> draw(tile);
+    window.draw(tile);
 }
 
 [[maybe_unused]] void Board::MoveHighlightWithArrowKeys()
@@ -122,7 +83,7 @@ void Board::HighlightWithRectangle(int x, int y)
             BOOST_LOG_TRIVIAL(info) << "Current position: " << board[highlightedTileX][highlightedTileY];
         }
     }
-    HighlightWithRectangle(highlightedTileX, highlightedTileY);
+    //HighlightWithRectangle(window, highlightedTileX, highlightedTileY);
 }
 
 [[maybe_unused]] void Board::CheckForJump()
@@ -227,12 +188,3 @@ void Board::HighlightJumpableTiles(int x, int y)
         gameWindow->close();
     }
 }*/
-
-void Board::Highlight(sf::RenderWindow& window, int x, int y) const
-{
-    sf::RectangleShape tile;
-    tile.setSize(sf::Vector2f((float) tileSize, (float)tileSize));
-    tile.setFillColor(sf::Color::Green);
-    tile.setPosition(sf::Vector2f((float) tileSize * (float)x, (float)tileSize * (float)y));
-    window.draw(tile);
-}

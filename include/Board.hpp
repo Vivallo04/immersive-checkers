@@ -7,23 +7,23 @@
 class Board
 {
 public:
-    ~Board();
+    int highlightedTileX = 0;
+    int highlightedTileY = 0;
 
-    void HandleEvents();
+    ~Board();
+    void HandleEvents(sf::RenderWindow& window);
     void Draw(sf::RenderWindow& window);
-    void Highlight(sf::RenderWindow& window, int x, int y) const;
-    void HighlightWithRectangle(int x, int y);
+    void HighlightGreen(sf::RenderWindow& window, int x, int y) const;
+    void HighlightWithRectangle(sf::RenderWindow& window, int x, int y) const;
     [[maybe_unused]] void MoveHighlightWithArrowKeys();
     [[maybe_unused]] void CheckForJump();
     [[maybe_unused]] void CheckForWin();
     void HighlightJumpableTiles(int x, int y);
 
+    int tileSize = 75;
 private:
     sf::RenderWindow *gameWindow{};
     int size = 8;
-    int tileSize = 75;
-    int highlightedTileX = 0;
-    int highlightedTileY = 0;
     int** board = new int*[size];
 };
 

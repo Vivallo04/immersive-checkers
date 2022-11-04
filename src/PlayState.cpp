@@ -39,7 +39,7 @@ void PlayState::Init()
 
     // play music
     bgMusic.setLoop(true);
-    bgMusic.play();
+    //bgMusic.play();
 }
 
 void PlayState::Update(float delta)
