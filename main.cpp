@@ -34,7 +34,8 @@ int main()
             if (event.type == sf::Event::Resized)
             {
                 // Update the view to the new size of the window
-                sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
+                sf::FloatRect visibleArea(0.f, 0.f, (float) event.size.width,
+                                                                             (float) event.size.height);
                 game -> window.setView(sf::View(visibleArea));
             }
             if (event.type == sf::Event::KeyPressed)
