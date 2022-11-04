@@ -9,7 +9,7 @@ public:
     int x, y;
     int size = 75;
     bool isAlive;
-    bool isKing;
+    bool isKing = false;
     sf::Color color;
 
     void Draw(sf::RenderWindow& window) const;
