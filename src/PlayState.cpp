@@ -155,7 +155,7 @@ int PlayState::MovePiece(int x, int y, Piece *isPiece, Piece *redPieces, Piece *
     if (x == isPiece->x - 2 && y == isPiece->y - 2)
     {
         if (!FindPiece(x, y, redPieces, whitePieces) &&
-            FindPiece(x + 1, y + 1, redPieces, whitePieces) != NULL &&
+            FindPiece(x + 1, y + 1, redPieces, whitePieces) != nullptr &&
             FindPiece(x + 1, y + 1, redPieces, whitePieces)->color != isPiece->color)
         {
             *turn = ((*turn == 1) ? 2 : 1);
@@ -169,7 +169,7 @@ int PlayState::MovePiece(int x, int y, Piece *isPiece, Piece *redPieces, Piece *
     if (x == isPiece->x + 2 && y == isPiece->y - 2)
     {
         if (!FindPiece(x, y, redPieces, whitePieces) &&
-            FindPiece(x - 1, y + 1, redPieces, whitePieces) != NULL &&
+            FindPiece(x - 1, y + 1, redPieces, whitePieces) != nullptr &&
             FindPiece(x - 1, y + 1, redPieces, whitePieces)->color != isPiece->color)
         {
             *turn = ((*turn == 1) ? 2 : 1);
@@ -237,7 +237,7 @@ int PlayState::MovePiece(int x, int y, Piece *isPiece, Piece *redPieces, Piece *
 
 void PlayState::Play()
 {
-    if (selectedPiece != NULL)
+    if (selectedPiece != nullptr)
     {
         //board.Highlight(window, selectedPiece->x, selectedPiece->y);
     }
@@ -258,17 +258,17 @@ void PlayState::Play()
         {
             if (FindPiece(x, y, redPieces, whitePieces) == selectedPiece)
             {
-                selectedPiece = NULL;
+                selectedPiece = nullptr;
             } else
             {
                 selectedPiece = FindPiece(x, y, redPieces, whitePieces);
             }
 
             selected = false;
-        } else if (selectedPiece != NULL && MovePiece(x, y, selectedPiece, redPieces, whitePieces, &turn))
+        } else if (selectedPiece != nullptr && MovePiece(x, y, selectedPiece, redPieces, whitePieces, &turn))
         {
             selected = false;
-            selectedPiece = NULL;
+            selectedPiece = nullptr;
         }
         selected = false;
     }
