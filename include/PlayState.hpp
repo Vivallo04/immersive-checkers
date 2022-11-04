@@ -28,23 +28,28 @@ public:
     // -- Game Objects --
     Board board;
     bool selected = false;
-    Piece* selectedPiece = nullptr;
+    Piece *selectedPiece = nullptr;
     int turn = 1;
 
     PlayState(Piece *whitePieces, Piece *redPieces);
+
     void Update(float delta) override;
 
-    void Setup(Piece* redPieces, Piece* whitePieces);
-    Piece* FindPiece(int x, int y, Piece* redPiece, Piece* whitePiece);
-    void KillPiece(int x, int y, Piece* redPiece, Piece* whitePiece, int *turn);
-    int CalculateMove(int x, int y, Piece* isPiece, Piece* redPieces, Piece* whitePieces, int *turn);
-    int MovePiece(int x, int y, Piece* isPiece, Piece* redPieces, Piece* whitePieces, int *turn);
+    void Setup(Piece *redPieces, Piece *whitePieces);
+
+    Piece *FindPiece(int x, int y, Piece *redPiece, Piece *whitePiece);
+
+    void KillPiece(int x, int y, Piece *redPiece, Piece *whitePiece, int *turn);
+
+    int CalculateMove(int x, int y, Piece *isPiece, Piece *redPieces, Piece *whitePieces, int *turn);
+
+    int MovePiece(int x, int y, Piece *isPiece, Piece *redPieces, Piece *whitePieces, int *turn);
 
 private:
     // Game Initialization
     void Init() override;
     void SetView();
-    void DrawBackground(float delta);};
-
+    void DrawBackground(float delta);
+};
 
 #endif //IMMERSIVE_CHECKERS_PLAYSTATE_HPP
