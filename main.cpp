@@ -103,6 +103,7 @@ int main()
         {
             int x = sf::Mouse::getPosition(window).x / game->board.tileSize;
             int y = sf::Mouse::getPosition(window).y / game->board.tileSize;
+
             if (game->FindPiece(x, y, redPieces, whitePieces) &&
                 (game->FindPiece(x, y, redPieces, whitePieces)->color == sf::Color::Red && game->turn == 1 ||
                  game->FindPiece(x, y, redPieces, whitePieces)->color == sf::Color::White && game->turn == 2))

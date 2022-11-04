@@ -117,6 +117,12 @@ void Board::HighlightWithRectangle(sf::RenderWindow& window, int x, int y) const
         }
     }
 }
+
+void Board::CheckForWin()
+{
+
+
+}
 /*
 void Board::HighlightJumpableTiles(int x, int y)
 {
