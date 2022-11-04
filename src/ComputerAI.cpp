@@ -1,4 +1,4 @@
-#include "ComputerAI.hpp"
+#include "../include/ComputerAI.hpp"
 
 ComputerAI::ComputerAI(Board &board)
 {

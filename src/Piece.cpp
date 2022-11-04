@@ -1,7 +1,7 @@
 #include "../include/Piece.hpp"
 
 
-void Piece::Draw(sf::RenderWindow window)
+void Piece::Draw(sf::RenderWindow& window) const
 {
     if (isAlive)
     {

@@ -8,11 +8,9 @@ Board::Board(sf::RenderWindow &gameWindow)
 {
     BOOST_LOG_TRIVIAL(info) << "Board constructor called";
     this -> gameWindow = &gameWindow;
-    this->gameWindow->setKeyRepeatEnabled(false);
+    this -> gameWindow->setKeyRepeatEnabled(false);
     this -> InitBoard();
-    this ->HighlightTile(0, 0);
-    //this->HandleEvents();
-
+    this -> HighlightTile(0, 0);
 }
 
 Board::~Board()
@@ -199,15 +197,14 @@ void Board::RenderPieces()
 
 void Board::HighlightTile(int x, int y)
 {
-    sf::RectangleShape rect(sf::Vector2f(tileSize, tileSize));
-    rect.setFillColor(sf::Color(0, 0, 0, 0));
-    rect.setOutlineThickness(4.0f);
-    rect.setPosition(boardPositionX + (x * tileSize), boardPositionY + (y * tileSize));
-    gameWindow -> draw(rect);
+    sf::RectangleShape tile(sf::Vector2f(tileSize, tileSize));
+    tile.setFillColor(sf::Color(0, 0, 0, 0));
+    tile.setOutlineThickness(4.0f);
+    tile.setPosition(boardPositionX + (x * tileSize), boardPositionY + (y * tileSize));
+    gameWindow -> draw(tile);
 }
 
-
-void Board::MoveHighlightWithArrowKeys()
+[[maybe_unused]] void Board::MoveHighlightWithArrowKeys()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
@@ -247,8 +244,6 @@ void Board::MoveHighlightWithArrowKeys()
 void Board::GetCurrentTilePosition(int x, int y)
 {
     BOOST_LOG_TRIVIAL(info) << "Current position: " << board[x][y];
-
-
 }
 
 void Board::MovePiece(int x, int y)
@@ -362,6 +357,10 @@ void Board::MoveHighlightedPiece(int x, int y)
 {
     if (this->board[x][y] == 1)
     {
+
+
+
+
         this->board[x][y] = 0;
         this->board[x - 1][y - 1] = 1;
         this->board[x + 1][y - 1] = 1;
@@ -406,5 +405,35 @@ void Board::HighlightJumpableTiles(int x, int y)
             rect.setOutlineThickness(4.0f);
             rect.setPosition(boardPositionX + ((x + 2) * tileSize), boardPositionY + ((y + 2) * tileSize));
         }
+    }
+}
+
+void Board::CheckForWin()
+{
+    int player1Count = 0;
+    int player2Count = 0;
+    for (int i = 0; i < boardSize; i++)
+    {
+        for (int j = 0; j < boardSize; j++)
+        {
+            if (this->board[i][j] == 1)
+            {
+                player1Count++;
+            }
+            if (this->board[i][j] == 2)
+            {
+                player2Count++;
+            }
+        }
+    }
+    if (player1Count == 0)
+    {
+        BOOST_LOG_TRIVIAL(info) << "Player 2 wins!";
+        gameWindow->close();
+    }
+    if (player2Count == 0)
+    {
+        BOOST_LOG_TRIVIAL(info) << "Player 1 wins!";
+        gameWindow->close();
     }
 }

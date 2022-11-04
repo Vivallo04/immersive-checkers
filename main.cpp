@@ -11,11 +11,13 @@ int main()
 {
     BOOST_LOG_TRIVIAL(info) << "Starting PlayState";
     // SFML Logic
+    sf::ContextSettings settings;
     sf::Event event{};
     sf::Clock clock;
 
     // PlayState
-    PlayState* game = new PlayState();
+    auto* game = new PlayState();
+    settings.antialiasingLevel = 16.0;
 
     BOOST_LOG_TRIVIAL(info) << "The PlayState is being drawn";
     while (true)
@@ -37,8 +39,18 @@ int main()
             }
             if (event.type == sf::Event::KeyPressed)
             {
-
-
+                if (event.key.code == sf::Keyboard::Escape)
+                {
+                    game -> window.close();
+                    delete game;
+                    return EXIT_SUCCESS;
+                }
+            }
+            if (game -> isGameOver)
+            {
+                game -> window.close();
+                delete game;
+                return EXIT_SUCCESS;
             }
         }
 

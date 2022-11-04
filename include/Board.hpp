@@ -18,15 +18,14 @@ public:
     void RenderPieces();
     void InitBoard();
     void HighlightTile(int x, int y);
-    void MoveHighlightWithArrowKeys();
+    [[maybe_unused]] void MoveHighlightWithArrowKeys();
     void GetCurrentTilePosition(int x, int y);
     void MovePiece(int x, int y);
     void CheckForJump();
-    void HighlightMoveableTiles();
     void CheckForWin();
-    void ResetBoard();
     void HighlightPiece(int x, int y);
     void HighlightMoveableTiles(int x, int y);
+    void HighlightMoveableTiles();
     void MoveHighlightedPiece(int x, int y);
     void HighlightJumpableTiles(int x, int y);
 
@@ -38,6 +37,7 @@ private:
     int boardPositionY = 720/16;
     int tileSize = 60;
     int boardSize = 8;
+    int grid[8][8] = {0};
 
     bool isTileHighlighted = false;
     int highlightedTileX = 0;

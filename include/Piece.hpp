@@ -11,7 +11,7 @@ public:
     bool isKing;
     sf::Color color;
 
-    void Draw(sf::RenderWindow  window);
+    void Draw(sf::RenderWindow& window) const;
 
 };
 
